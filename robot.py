@@ -46,9 +46,9 @@ class Robot(wpilib.TimedRobot):
         """Teleoperated mode periodic (20ms)"""
         # Drive
         try:
-            self.drive.setSpeedsFromJoystick(self.joystick.getX(),
-                                             self.joystick.getY(),
-                                             self.joystick.getTwist())
+            self.drivetrain.set_speeds_from_joystick(self.joystick.getX(),
+                                                     self.joystick.getY(),
+                                                     self.joystick.getTwist())
         except:
             self.onException()
 
