@@ -64,7 +64,7 @@ class Robot(wpilib.TimedRobot):
                 component.execute()
             except Exception as exception:
                 self.logger.exception(exception)
-        # Drive
+        # Drivetrain
         try:
             self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
                                                 self.joystick_y.get(),
