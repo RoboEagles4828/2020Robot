@@ -15,7 +15,7 @@ class DigitalInput:
     def get(self):
         return self.value
 
-    def update(self):
+    def execute(self):
         # Add data
         self.data.append(self.get_raw())
         # Drop old data

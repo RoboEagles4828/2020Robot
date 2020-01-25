@@ -1,10 +1,11 @@
 """Main robot module"""
 import logging
-import sys
-import json
 import wpilib
 import ctre
 
+import config
+from components.low.analog_input import AnalogInput
+from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
 
 
@@ -12,24 +13,37 @@ class Robot(wpilib.TimedRobot):
     """Main robot class"""
     def robotInit(self):
         """Robot initialization"""
+        # Create logger
         self.logger = logging.getLogger("Robot")
-        # Load ports and buttons
-        with open(sys.path[0] + "/ports.json") as file:
-            self.ports = json.load(file)
-        with open(sys.path[0] + "/buttons.json") as file:
-            self.buttons = json.load(file)
         # Create timer
         self.timer = wpilib.Timer()
+        # Create components list
+        self.components = list()
         # Create joystick
         self.joystick = wpilib.Joystick(0)
+        self.joystick_x = AnalogInput(
+            self.joystick.getX,
+            deadzone=config.Robot.JOYSTICK_DEADZONE,
+            average_period=config.Robot.JOYSTICK_AVERAGE_PERIOD)
+        self.components.append(self.joystick_x)
+        self.joystick_y = AnalogInput(
+            self.joystick.getY,
+            map_a=-1,
+            deadzone=config.Robot.JOYSTICK_DEADZONE,
+            average_period=config.Robot.JOYSTICK_AVERAGE_PERIOD)
+        self.components.append(self.joystick_y)
+        self.joystick_twist = AnalogInput(
+            self.joystick.getTwist,
+            deadzone=config.Robot.JOYSTICK_DEADZONE,
+            average_period=config.Robot.JOYSTICK_AVERAGE_PERIOD)
+        self.components.append(self.joystick_twist)
         # Create drivetrain
-        self.front_left = ctre.WPI_TalonSRX(self.ports["drive"]["front_left"])
-        self.front_right = ctre.WPI_TalonSRX(
-            self.ports["drive"]["front_right"])
-        self.back_left = ctre.WPI_TalonSRX(self.ports["drive"]["back_left"])
-        self.back_right = ctre.WPI_TalonSRX(self.ports["drive"]["back_right"])
-        self.drivetrain = Drivetrain(self.front_left, self.front_right,
-                                     self.back_left, self.back_right)
+        left_0 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.LEFT_0)
+        left_1 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.LEFT_1)
+        right_0 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.RIGHT_0)
+        right_1 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.RIGHT_1)
+        self.drivetrain = Drivetrain(left_0, left_1, right_0, right_1)
+        self.components.append(self.drivetrain)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
@@ -44,13 +58,19 @@ class Robot(wpilib.TimedRobot):
 
     def teleopPeriodic(self):
         """Teleoperated mode periodic (20ms)"""
-        # Drive
+        # Run each component's execute function
+        for component in self.components:
+            try:
+                component.execute()
+            except Exception as exception:
+                self.logger.exception(exception)
+        # Drivetrain
         try:
-            self.drivetrain.set_speeds_from_joystick(self.joystick.getX(),
-                                                     self.joystick.getY(),
-                                                     self.joystick.getTwist())
-        except:
-            self.onException()
+            self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
+                                                self.joystick_y.get(),
+                                                self.joystick_twist.get())
+        except Exception as exception:
+            self.logger.exception(exception)
 
     def disabledInit(self):
         """Disabled mode initialization"""
