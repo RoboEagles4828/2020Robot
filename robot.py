@@ -46,17 +46,24 @@ class Robot(wpilib.TimedRobot):
         self.drivetrain = Drivetrain(left_0, left_1, right_0, right_1)
         self.components.append(self.drivetrain)
         # Create shooter
-        intake_motor = ctre.WPI_TalonSRX(config.Ports.Shooter.intake_m)
-        intake_piston = wpilib.DoubleSolenoid(config.Ports.Shooter.intake_p)
-        conveyor_motor = ctre.WPI_TalonSRX(config.Ports.Shooter.conveyor_m)
-        left_shooter = ctre.WPI_TalonSRX(config.Ports.Shooter.shooter_l_m)
-        right_shooter = ctre.WPI_TalonSRX(config.Ports.Shooter.shooter_r_m)
-        shooter_piston_left = wpilib.DoubleSolenoid(config.Ports.Shooter.shooter_l_p)
-        shooter_piston_right = wpilib.DoubleSolenoid(config.Ports.Shooter.shooter_r_p)
-        prox_sensor_front = wpilib.DigitalInput(config.Ports.Shooter.prox_front)
-        prox_sensor_back = wpilib.DigitalInput(config.Ports.Shooter.prox_back)
-        self.shooter = Shooter(intake_motor,intake_piston,conveyor_motor,left_shooter,right_shooter,shooter_piston_left,
-                                shooter_piston_right, prox_sensor_front, prox_sensor_back)
+        intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
+        intake_piston = wpilib.DoubleSolenoid(
+            config.Ports.Shooter.INTAKE_PISTON)
+        conveyor = ctre.WPI_TalonSRX(config.Ports.Shooter.CONVEYOR)
+        conveyor_prox_front = wpilib.DigitalInput(
+            config.Ports.Shooter.CONVEYOR_PROX_FRONT)
+        conveyor_prox_back = wpilib.DigitalInput(
+            config.Ports.Shooter.CONVEYOR_PROX_BACK)
+        shooter_left = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_LEFT)
+        shooter_right = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_RIGHT)
+        shooter_piston_0 = wpilib.DoubleSolenoid(
+            config.Ports.Shooter.SHOOTER_PISTON_0)
+        shooter_piston_1 = wpilib.DoubleSolenoid(
+            config.Ports.Shooter.SHOOTER_PISTON_1)
+        self.shooter = Shooter(intake, intake_piston, conveyor,
+                               conveyor_prox_front, conveyor_prox_back,
+                               shooter_left, shooter_right, shooter_piston_0,
+                               shooter_piston_1)
         self.components.append(self.shooter)
 
     def autonomousInit(self):
@@ -85,6 +92,7 @@ class Robot(wpilib.TimedRobot):
                                                 self.joystick_twist.get())
         except Exception as exception:
             self.logger.exception(exception)
+
     def disabledInit(self):
         """Disabled mode initialization"""
 
