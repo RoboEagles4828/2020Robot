@@ -7,6 +7,7 @@ import config
 from components.low.analog_input import AnalogInput
 from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
+from components.low.shooter import Shooter
 
 
 class Robot(wpilib.TimedRobot):
@@ -44,6 +45,8 @@ class Robot(wpilib.TimedRobot):
         right_1 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.RIGHT_1)
         self.drivetrain = Drivetrain(left_0, left_1, right_0, right_1)
         self.components.append(self.drivetrain)
+        # Crate shooter
+
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
@@ -71,7 +74,8 @@ class Robot(wpilib.TimedRobot):
                                                 self.joystick_twist.get())
         except Exception as exception:
             self.logger.exception(exception)
-
+        # Intake
+            
     def disabledInit(self):
         """Disabled mode initialization"""
 
