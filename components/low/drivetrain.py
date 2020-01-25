@@ -4,8 +4,8 @@ import ctre
 
 class Drivetrain:
     """Drivetrain class"""
-    def __init__(self, left_0: ctre.WPI_TalonSRX, left_1: ctre.WPI_TalonSRX,
-                 right_0: ctre.WPI_TalonSRX, right_1: ctre.WPI_TalonSRX):
+    def __init__(self, left_0: ctre.WPI_TalonFX, left_1: ctre.WPI_TalonFX,
+                 right_0: ctre.WPI_TalonFX, right_1: ctre.WPI_TalonFX):
         self.left_0 = left_0
         self.left_1 = left_1
         self.right_0 = right_0
@@ -52,5 +52,5 @@ class Drivetrain:
     def execute(self):
         self.left_0.set(self.speed_left)
         self.left_1.set(self.speed_left)
-        self.right_0.set(self.speed_right)
-        self.right_1.set(self.speed_right)
+        self.right_0.set(-self.speed_right)
+        self.right_1.set(-self.speed_right)

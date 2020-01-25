@@ -38,10 +38,10 @@ class Robot(wpilib.TimedRobot):
             average_period=config.Robot.JOYSTICK_AVERAGE_PERIOD)
         self.components.append(self.joystick_twist)
         # Create drivetrain
-        left_0 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.LEFT_0)
-        left_1 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.LEFT_1)
-        right_0 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.RIGHT_0)
-        right_1 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.RIGHT_1)
+        left_0 = ctre.WPI_TalonFX(config.Ports.Drivetrain.LEFT_0)
+        left_1 = ctre.WPI_TalonFX(config.Ports.Drivetrain.LEFT_1)
+        right_0 = ctre.WPI_TalonFX(config.Ports.Drivetrain.RIGHT_0)
+        right_1 = ctre.WPI_TalonFX(config.Ports.Drivetrain.RIGHT_1)
         self.drivetrain = Drivetrain(left_0, left_1, right_0, right_1)
         self.components.append(self.drivetrain)
 
@@ -66,9 +66,9 @@ class Robot(wpilib.TimedRobot):
                 self.logger.exception(exception)
         # Drivetrain
         try:
-            self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
-                                                self.joystick_y.get(),
-                                                self.joystick_twist.get())
+            self.drivetrain.set_speeds_joystick(
+                0.5 * self.joystick_x.get(), 0.5 * self.joystick_y.get(),
+                0.1 * self.joystick_twist.get())
         except Exception as exception:
             self.logger.exception(exception)
 
