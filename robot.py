@@ -45,8 +45,7 @@ class Robot(wpilib.TimedRobot):
         right_1 = ctre.WPI_TalonSRX(config.Ports.Drivetrain.RIGHT_1)
         self.drivetrain = Drivetrain(left_0, left_1, right_0, right_1)
         self.components.append(self.drivetrain)
-        # Crate shooter
-
+        # Create shooter
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
@@ -75,7 +74,6 @@ class Robot(wpilib.TimedRobot):
         except Exception as exception:
             self.logger.exception(exception)
         # Intake
-            
     def disabledInit(self):
         """Disabled mode initialization"""
 
