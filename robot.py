@@ -23,17 +23,19 @@ class Robot(wpilib.TimedRobot):
         self.joystick = wpilib.Joystick(0)
         self.joystick_x = AnalogInput(
             self.joystick.getX,
+            map_a=config.Robot.JOYSTICK_X_MAP_A,
             deadzone=config.Robot.JOYSTICK_DEADZONE,
             average_period=config.Robot.JOYSTICK_AVERAGE_PERIOD)
         self.components.append(self.joystick_x)
         self.joystick_y = AnalogInput(
             self.joystick.getY,
-            map_a=-1,
+            map_a=-config.Robot.JOYSTICK_Y_MAP_A,
             deadzone=config.Robot.JOYSTICK_DEADZONE,
             average_period=config.Robot.JOYSTICK_AVERAGE_PERIOD)
         self.components.append(self.joystick_y)
         self.joystick_twist = AnalogInput(
             self.joystick.getTwist,
+            map_a=config.Robot.JOYSTICK_TWIST_MAP_A,
             deadzone=config.Robot.JOYSTICK_DEADZONE,
             average_period=config.Robot.JOYSTICK_AVERAGE_PERIOD)
         self.components.append(self.joystick_twist)
@@ -66,9 +68,9 @@ class Robot(wpilib.TimedRobot):
                 self.logger.exception(exception)
         # Drivetrain
         try:
-            self.drivetrain.set_speeds_joystick(
-                0.5 * self.joystick_x.get(), 0.5 * self.joystick_y.get(),
-                0.1 * self.joystick_twist.get())
+            self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
+                                                self.joystick_y.get(),
+                                                self.joystick_twist.get())
         except Exception as exception:
             self.logger.exception(exception)
 
