@@ -7,6 +7,7 @@ import config
 from components.low.analog_input import AnalogInput
 from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
+from components.low.shooter import Shooter
 
 
 class Robot(wpilib.TimedRobot):
@@ -46,6 +47,26 @@ class Robot(wpilib.TimedRobot):
         right_1 = ctre.WPI_TalonFX(config.Ports.Drivetrain.RIGHT_1)
         self.drivetrain = Drivetrain(left_0, left_1, right_0, right_1)
         self.components.append(self.drivetrain)
+        # Create shooter
+        intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
+        intake_piston = wpilib.DoubleSolenoid(
+            config.Ports.Shooter.INTAKE_PISTON)
+        conveyor = ctre.WPI_TalonSRX(config.Ports.Shooter.CONVEYOR)
+        conveyor_prox_front = wpilib.DigitalInput(
+            config.Ports.Shooter.CONVEYOR_PROX_FRONT)
+        conveyor_prox_back = wpilib.DigitalInput(
+            config.Ports.Shooter.CONVEYOR_PROX_BACK)
+        shooter_left = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_LEFT)
+        shooter_right = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_RIGHT)
+        shooter_piston_0 = wpilib.DoubleSolenoid(
+            config.Ports.Shooter.SHOOTER_PISTON_0)
+        shooter_piston_1 = wpilib.DoubleSolenoid(
+            config.Ports.Shooter.SHOOTER_PISTON_1)
+        self.shooter = Shooter(intake, intake_piston, conveyor,
+                               conveyor_prox_front, conveyor_prox_back,
+                               shooter_left, shooter_right, shooter_piston_0,
+                               shooter_piston_1)
+        self.components.append(self.shooter)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
@@ -71,6 +92,22 @@ class Robot(wpilib.TimedRobot):
             self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
                                                 self.joystick_y.get(),
                                                 self.joystick_twist.get())
+        except Exception as exception:
+            self.logger.exception(exception)
+        # Shooter
+        try:
+            if self.joystick.getRawButton(config.Buttons.Shooter.INTAKE):
+                self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
+                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
+            else:
+                self.shooter.set_conveyor_speed(0)
+                self.shooter.set_intake_speed(0)
+            if self.joystick.getRawButton(config.Buttons.Shooter.SHOOTER):
+                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
+                self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+            else:
+                self.shooter.set_conveyor_speed(0)
+                self.shooter.set_shooter_speed(0)
         except Exception as exception:
             self.logger.exception(exception)
 
