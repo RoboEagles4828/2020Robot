@@ -94,20 +94,21 @@ class Robot(wpilib.TimedRobot):
             self.logger.exception(exception)
         # Shooter
         try:
-            if self.joystick.getRawButton(2):
-                self.shooter.set_conveyor_speed(1)
-                self.shooter.set_intake_speed(1)
+            if self.joystick.getRawButton(config.Buttons.Shooter.INTAKE):
+                self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
+                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
             else:
                 self.shooter.set_conveyor_speed(0)
                 self.shooter.set_intake_speed(0)
-            if self.joystick.getRawButton(1):
-                self.shooter.set_conveyor_speed(1)
-                self.shooter.set_shooter_speed(1)
+            if self.joystick.getRawButton(config.Buttons.Shooter.SHOOTER):
+                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
+                self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
             else:
                 self.shooter.set_conveyor_speed(0)
                 self.shooter.set_shooter_speed(0)
         except Exception as exception:
             self.logger.exception(exception)
+
     def disabledInit(self):
         """Disabled mode initialization"""
 

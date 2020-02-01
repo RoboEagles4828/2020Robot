@@ -1,6 +1,9 @@
 class Robot:
     JOYSTICK_DEADZONE = 0
     JOYSTICK_AVERAGE_PERIOD = 0
+    INTAKE_SPEED = 1
+    CONVEYOR_SPEED = 1
+    SHOOTER_SPEED = 1
 
 
 class Ports:
@@ -23,4 +26,6 @@ class Ports:
 
 
 class Buttons:
-    pass
+    class Shooter:
+        INTAKE = 2
+        SHOOTER = 1
