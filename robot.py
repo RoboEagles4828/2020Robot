@@ -101,13 +101,14 @@ class Robot(wpilib.TimedRobot):
             else:
                 self.shooter.set_intake_speed(0)
             if self.joystick.getRawButton(config.Buttons.Shooter.SHOOTER):
-                self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
                 self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
+                self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
             else:
-                self.shooter.set_shooter_speed(0)
                 self.shooter.set_conveyor_speed(0)
-            if self.shooter.get_conveyor_prox_front() == True and self.shooter.get_conveyor_prox_back()==False:
-                self.shooter.set_conveyor_speed(0.75)
+                self.shooter.set_shooter_speed(0)
+            if self.shooter.get_conveyor_prox_front(
+            ) and not self.shooter.get_conveyor_prox_back():
+                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
             else:
                 self.shooter.set_conveyor_speed(0)
         except Exception as exception:
