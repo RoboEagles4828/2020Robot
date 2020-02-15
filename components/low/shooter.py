@@ -1,7 +1,7 @@
 """Shooter module"""
 import ctre
 import wpilib
-
+import config
 
 class Shooter:
     """Shooter class"""
@@ -67,3 +67,8 @@ class Shooter:
         else:
             self.shooter_piston_0.set(wpilib.DoubleSolenoid.Value.kReverse)
             self.shooter_piston_1.set(wpilib.DoubleSolenoid.Value.kReverse)
+        if self.get_conveyor_prox_front(
+            ) and not self.get_conveyor_prox_back():
+                self.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
+        else:
+                self.set_conveyor_speed(0)

@@ -70,10 +70,44 @@ class Robot(wpilib.TimedRobot):
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
-
+        self.pos1 = False
+        self.pos2 = False
+        self.navx.reset()
+        self.navx.resetDisplacement()
+        
     def autonomousPeriodic(self):
         """Autonomous mode periodic (20ms)"""
-
+     # Run each component's execute function
+        for component in self.components:
+            try:
+                component.execute()
+            except Exception as exception:
+                self.logger.exception(exception)
+        # Auton mode 1
+        try:
+            if self.drivetrain.get_distance() <= 1:
+                self.shooter.set_shooter_speed(0.8)
+            elif  self.drivetrain.get_distance() <= 43.315 and not self.pos1:
+                self.drivetrain.set_speeds(0.7, 0.7)
+            elif self.navx.getAngle() % 360 <= 90:
+                self.pos1 = True
+                self.drivetrain.reset_distance()
+                self.drivetrain.set_speeds(-0.3, 0.3)
+            elif self.drivetrain.get_distance() <= 66.91 and not self.pos2:
+                self.drivetrain.set_speeds(0.7, 0.7)
+            elif self.navx.getAngle() % 360 >= 0:
+                self.pos2 = True
+                self.drivetrain.reset_distance()
+                self.drivetrain.set_speeds(0.3, -0.3)
+            elif self.drivetrain.get_distance() <= 156.315:
+                self.drivetrain.set_speeds(0.5, 0.5)
+                self.shooter.set_intake_speed(1)
+            elif self.drivetrain.get_distance() >= 0:
+                self.drivetrain.set_speeds(-0.5,-0.5)
+            else:
+                self.drivetrain.set_speeds(0, 0)
+        except Exception as exception:
+            self.logger.exception(exception)
     def teleopInit(self):
         """Teleoperated mode initialization"""
         self.timer.reset()
@@ -106,11 +140,6 @@ class Robot(wpilib.TimedRobot):
             else:
                 self.shooter.set_conveyor_speed(0)
                 self.shooter.set_shooter_speed(0)
-            if self.shooter.get_conveyor_prox_front(
-            ) and not self.shooter.get_conveyor_prox_back():
-                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-            else:
-                self.shooter.set_conveyor_speed(0)
         except Exception as exception:
             self.logger.exception(exception)
 
