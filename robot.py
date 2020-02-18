@@ -67,6 +67,8 @@ class Robot(wpilib.TimedRobot):
                                shooter_left, shooter_right, shooter_piston_0,
                                shooter_piston_1)
         self.components.append(self.shooter)
+        # Create compressor
+        wpilib.Compressor(0).setClosedLoopControl(True)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
