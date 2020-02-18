@@ -75,6 +75,9 @@ class Robot(wpilib.TimedRobot):
         """Autonomous mode initialization"""
 
     def autonomousPeriodic(self):
+        self.auton_mode.run(iter_fn=self.autonomous)
+
+    def autonomous(self):
         """Autonomous mode periodic (20ms)"""
         # Run each component's execute function
         for component in self.components:
@@ -82,7 +85,6 @@ class Robot(wpilib.TimedRobot):
                 component.execute()
             except Exception as exception:
                 self.logger.exception(exception)
-        self.auton_mode.run()
 
     def teleopInit(self):
         """Teleoperated mode initialization"""
