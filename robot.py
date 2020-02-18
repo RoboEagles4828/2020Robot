@@ -134,8 +134,8 @@ class Robot(wpilib.TimedRobot):
             self.logger.exception(exception)
         # Auton Mode 2
         try:
-            if True:
-                pass
+            if not self.pos1:
+                
         except Exception as exception:
             self.logger.exception(exception)
     def teleopInit(self):
