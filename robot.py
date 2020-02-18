@@ -86,20 +86,12 @@ class Robot(wpilib.TimedRobot):
                 self.logger.exception(exception)
         # Auton mode 1
         try:
-<<<<<<< HEAD
-            if self.drivetrain.get_distance() >= 0 or self.drivetrain.get_distance() <= 5:
-                self.shooter.set_shooter_speed(0.8)
-                self.shooter.set_conveyor_speed(1)
-                self.drivetrain.reset_distance()
-            elif  self.drivetrain.get_distance() < 56.315 and not self.pos1:
-=======
             if self.state == 0 and self.timer.get() < 3.0:
                 self.shooter.set_shooter_speed(0.8)
                 self.shooter.set_conveyor_speed(1)
                 self.drivetrain.reset_distance()
             elif  self.drivetrain.get_distance() < 43.315 or self.state == 0:
                 self.state = 1
->>>>>>> 1ee26368f039aa3aeb3b6856b28708983661d231
                 self.drivetrain.set_speeds(0.7, 0.7)
                 self.shooter.set_shooter_speed(0)
                 self.shooter.set_conveyor_speed(0)
@@ -114,19 +106,12 @@ class Robot(wpilib.TimedRobot):
                 self.state = 4
                 self.drivetrain.reset_distance()
                 self.drivetrain.set_speeds(0.3, -0.3)
-<<<<<<< HEAD
-            elif self.drivetrain.get_distance() <= 138.315:
-                self.drivetrain.set_speeds(0.5, 0.5)
-                self.shooter.set_intake_speed(1)
-            elif self.drivetrain.get_distance() > 0:
-=======
             elif self.drivetrain.get_distance() <= 156.315 or self.state == 4:
                 self.state = 5
                 self.drivetrain.set_speeds(0.5, 0.5)
                 self.shooter.set_intake_speed(1)
             elif self.drivetrain.get_distance() > 0 or self.state == 5:
                 self.state = 6
->>>>>>> 1ee26368f039aa3aeb3b6856b28708983661d231
                 self.drivetrain.set_speeds(-0.5,-0.5)
                 self.shooter.set_intake_speed(0)
                 self.navx.reset()
@@ -167,7 +152,7 @@ class Robot(wpilib.TimedRobot):
             
             elif not self.pos2:
                 if self.drivetrain.get_distance() < 195:
-                    
+
         except Exception as exception:
             self.logger.exception(exception)
     def teleopInit(self):
