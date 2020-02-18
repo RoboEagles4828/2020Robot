@@ -75,10 +75,10 @@ class Robot(wpilib.TimedRobot):
         self.navx.resetDisplacement()
         self.drivetrain.reset_distance()
         self.timer.reset()
-        
+
     def autonomousPeriodic(self):
         """Autonomous mode periodic (20ms)"""
-     # Run each component's execute function
+        # Run each component's execute function
         for component in self.components:
             try:
                 component.execute()
@@ -90,7 +90,7 @@ class Robot(wpilib.TimedRobot):
                 self.shooter.set_shooter_speed(0.8)
                 self.shooter.set_conveyor_speed(1)
                 self.drivetrain.reset_distance()
-            elif  self.drivetrain.get_distance() < 43.315 or self.state == 0:
+            elif self.drivetrain.get_distance() < 43.315 or self.state == 0:
                 self.state = 1
                 self.drivetrain.set_speeds(0.7, 0.7)
                 self.shooter.set_shooter_speed(0)
@@ -112,25 +112,25 @@ class Robot(wpilib.TimedRobot):
                 self.shooter.set_intake_speed(1)
             elif self.drivetrain.get_distance() > 0 or self.state == 5:
                 self.state = 6
-                self.drivetrain.set_speeds(-0.5,-0.5)
+                self.drivetrain.set_speeds(-0.5, -0.5)
                 self.shooter.set_intake_speed(0)
                 self.navx.reset()
             elif self.navx.getAngle() % 360 > -90 or self.state == 6:
                 self.state = 7
                 self.drivetrain.reset_distance()
-                self.drivetrain.set_speeds(0.3,-0.3)
+                self.drivetrain.set_speeds(0.3, -0.3)
             elif self.drivetrain.get_distance() > -66.91 or self.state == 7:
                 self.state = 8
-                self.drivetrain.set_speeds(-0.7,-0.7)
+                self.drivetrain.set_speeds(-0.7, -0.7)
             elif self.navx.getAngle() % 360 < 0 or self.state == 8:
                 self.drivetrain.reset_distance()
-                self.drivetrain.set_speeds(-0.3,0.3)
+                self.drivetrain.set_speeds(-0.3, 0.3)
                 self.state = 9
             elif self.drivetrain.get_distance() > -43.315 or self.state == 9:
                 self.state = 10
-                self.drivetrain.set_speeds(-0.7,-0.7)
+                self.drivetrain.set_speeds(-0.7, -0.7)
             elif self.state == 10:
-                self.drivetrain.set_speeds(0,0)
+                self.drivetrain.set_speeds(0, 0)
                 self.shooter.set_shooter_speed(0.8)
                 self.shooter.set_conveyor_speed(1)
             else:
@@ -146,6 +146,7 @@ class Robot(wpilib.TimedRobot):
                 pass
         except Exception as exception:
             self.logger.exception(exception)
+
     def teleopInit(self):
         """Teleoperated mode initialization"""
         self.timer.reset()
