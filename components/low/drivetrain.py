@@ -55,7 +55,7 @@ class Drivetrain:
     def reset_distance(self):
         self.distance = 0
     def get_encoder(self):
-        pass
+        return self.left_0.getSelectedSensorPosition()
 
     def execute(self):
         self.left_0.set(self.speed_left)
