@@ -22,11 +22,7 @@ blocks = BlockArray(100)
 
 while 1:
     count = pixy.ccc_get_blocks(100, blocks)
-
     if count == 1:
         network_table.putNumber("value", 2 * blocks[0].m_x / frame_width - 1)
-        print('[BLOCK: SIG=%d X=%3d Y=%3d WIDTH=%3d HEIGHT=%3d]' %
-              (blocks[0].m_signature, blocks[0].m_x, blocks[0].m_y,
-               blocks[0].m_width, blocks[0].m_height))
     else:
         network_table.putNumber("value", 1.0)
