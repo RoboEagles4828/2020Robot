@@ -7,6 +7,7 @@ class Robot:
     INTAKE_SPEED = 1
     CONVEYOR_SPEED = 1
     SHOOTER_SPEED = 1
+    ENC_RATIO = 0
 
 
 class Ports:

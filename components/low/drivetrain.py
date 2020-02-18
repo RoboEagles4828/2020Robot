@@ -1,6 +1,6 @@
 """Drivetrain module"""
 import ctre
-
+import config
 
 class Drivetrain:
     """Drivetrain class"""
@@ -12,6 +12,7 @@ class Drivetrain:
         self.right_1 = right_1
         self.speed_left = 0
         self.speed_right = 0
+        self.distance = 0
 
     def set_speeds(self, speed_left: float, speed_right: float) -> None:
         """
@@ -49,9 +50,10 @@ class Drivetrain:
         # Set speeds
         self.set_speeds(speed_left, speed_right)
     def get_distance(self):
-        pass
+        self.distance = self.get_encoder()/config.Robot.ENC_RATIO
+        return self.distance
     def reset_distance(self):
-        pass
+        self.distance = 0
     def get_encoder(self):
         pass
 
