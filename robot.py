@@ -135,7 +135,16 @@ class Robot(wpilib.TimedRobot):
         # Auton Mode 2
         try:
             if not self.pos1:
-                
+                if self.navx.getAngle() % 360 < 29.16:
+                    self.drivetrain.set_speeds(-.3, .3)
+                elif self.navx.getAngle() % 360 > 0:
+                    self.drivetrain.set_speeds(.3, -.3)
+                else:
+                    self.pos1 = True
+            
+            elif not self.pos2:
+                if self.drivetrain.get_distance() < 195:
+                    
         except Exception as exception:
             self.logger.exception(exception)
     def teleopInit(self):
