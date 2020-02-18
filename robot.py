@@ -149,7 +149,6 @@ class Robot(wpilib.TimedRobot):
                     self.drivetrain.set_speeds(.3, -.3)
                 else:
                     self.pos1 = True
-            
             elif not self.pos2:
                 if self.drivetrain.get_distance() < 195:
 
