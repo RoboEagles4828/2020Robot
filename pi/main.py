@@ -28,3 +28,5 @@ while 1:
         print('[BLOCK: SIG=%d X=%3d Y=%3d WIDTH=%3d HEIGHT=%3d]' %
               (blocks[0].m_signature, blocks[0].m_x, blocks[0].m_y,
                blocks[0].m_width, blocks[0].m_height))
+    else:
+        network_table.putNumber("value", 1.0)
