@@ -85,75 +85,8 @@ class Robot(wpilib.TimedRobot):
             except Exception as exception:
                 self.logger.exception(exception)
         # Auton mode 1
-        try:
-            if self.state == 0 and self.timer.get() < 3.0:
-                self.shooter.set_shooter_speed(0.8)
-                self.shooter.set_conveyor_speed(1)
-                self.drivetrain.reset_distance()
-            elif self.drivetrain.get_distance() < 43.315 or self.state == 0:
-                self.state = 1
-                self.drivetrain.set_speeds(0.7, 0.7)
-                self.shooter.set_shooter_speed(0)
-                self.shooter.set_conveyor_speed(0)
-            elif self.navx.getAngle() % 360 < 90 or self.state == 1:
-                self.state = 2
-                self.drivetrain.reset_distance()
-                self.drivetrain.set_speeds(-0.3, 0.3)
-            elif self.drivetrain.get_distance() < 66.91 or self.state == 2:
-                self.state = 3
-                self.drivetrain.set_speeds(0.7, 0.7)
-            elif self.navx.getAngle() % 360 > 0 or self.state == 3:
-                self.state = 4
-                self.drivetrain.reset_distance()
-                self.drivetrain.set_speeds(0.3, -0.3)
-            elif self.drivetrain.get_distance() <= 156.315 or self.state == 4:
-                self.state = 5
-                self.drivetrain.set_speeds(0.5, 0.5)
-                self.shooter.set_intake_speed(1)
-            elif self.drivetrain.get_distance() > 0 or self.state == 5:
-                self.state = 6
-                self.drivetrain.set_speeds(-0.5, -0.5)
-                self.shooter.set_intake_speed(0)
-                self.navx.reset()
-            elif self.navx.getAngle() % 360 > -90 or self.state == 6:
-                self.state = 7
-                self.drivetrain.reset_distance()
-                self.drivetrain.set_speeds(0.3, -0.3)
-            elif self.drivetrain.get_distance() > -66.91 or self.state == 7:
-                self.state = 8
-                self.drivetrain.set_speeds(-0.7, -0.7)
-            elif self.navx.getAngle() % 360 < 0 or self.state == 8:
-                self.drivetrain.reset_distance()
-                self.drivetrain.set_speeds(-0.3, 0.3)
-                self.state = 9
-            elif self.drivetrain.get_distance() > -43.315 or self.state == 9:
-                self.state = 10
-                self.drivetrain.set_speeds(-0.7, -0.7)
-            elif self.state == 10:
-                self.drivetrain.set_speeds(0, 0)
-                self.shooter.set_shooter_speed(0.8)
-                self.shooter.set_conveyor_speed(1)
-            else:
-                self.drivetrain.set_speeds(0, 0)
-                self.shooter.set_shooter_speed(0)
-                self.shooter.set_intake_speed(0)
-                self.shooter.set_conveyor_speed(0)
-        except Exception as exception:
-            self.logger.exception(exception)
-        # Auton Mode 2
-        try:
-            if not self.pos1:
-                if self.navx.getAngle() % 360 < 29.16:
-                    self.drivetrain.set_speeds(-.3, .3)
-                elif self.navx.getAngle() % 360 > 0:
-                    self.drivetrain.set_speeds(.3, -.3)
-                else:
-                    self.pos1 = True
-            elif not self.pos2:
-                if self.drivetrain.get_distance() < 195:
 
-        except Exception as exception:
-            self.logger.exception(exception)
+        # Auton Mode 2
 
     def teleopInit(self):
         """Teleoperated mode initialization"""
