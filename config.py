@@ -4,10 +4,11 @@ class Robot:
     JOYSTICK_TWIST_MAP_A = 0.25
     JOYSTICK_DEADZONE = 0.05
     JOYSTICK_AVERAGE_PERIOD = 0
-    INTAKE_SPEED = 1
-    CONVEYOR_SPEED = 1
-    SHOOTER_SPEED = 1
-    ENC_RATIO = 0
+    DRIVE_SPEED = 0.7
+    DRIVE_TURN_SPEED = 0.7
+    INTAKE_SPEED = 1.0
+    CONVEYOR_SPEED = 1.0
+    SHOOTER_SPEED = 0.8
 
 
 class Ports:
@@ -33,3 +34,7 @@ class Buttons:
     class Shooter:
         INTAKE = 2
         SHOOTER = 1
+
+
+class DriveTrain:
+    ENCODER_RATIO = 0
