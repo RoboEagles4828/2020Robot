@@ -1,12 +1,14 @@
 from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
-
+import navx
+from components.low.shooter import Shooter
+from components.low.drivetrain import Drivetrain
 import config
-
-
 class DoubleShoot6(StatefulAutonomous):
-
+    shooter: Shooter
+    drivetrain: Drivetrain
+    navx: navx
     MODE_NAME = "Double Shoot 6"
 
     @timed_state(duration=3.0, next_state="drive1", first=True)
