@@ -53,7 +53,7 @@ class DoubleShoot6(StatefulAutonomous):
         self.drivetrain.set_speeds(0.5,0.5)
         self.shooter.set_intake_speed(1)
         if self.drivetrain.get_distance() > 156.315:
-            self.next_state("turn3")
+            self.next_state("drive4")
     
     @state
     def drive4(self):
@@ -89,5 +89,10 @@ class DoubleShoot6(StatefulAutonomous):
             self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(-0.7,-0.7)
         if self.drivetrain.get_distance() < -43.315:
-            self.next_state("shoot")
+            self.next_state("shoot1")
 
+    @timed_state(duration=7.0)
+    def shoot1(self):
+        self.drivetrain.set_speeds(0,0)
+        self.shooter.set_conveyor_speed(1)
+        self.shooter.set_shooter_speed(0.8)
