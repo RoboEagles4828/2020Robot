@@ -30,6 +30,7 @@ class DoubleShoot6(StatefulAutonomous):
     def turn1(self, initial_call):
         if initial_call:
             self.navx.reset()
+            self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(-0.3, 0.3)
         if self.navx.getAngle() % 360 > 90:
             self.next_state("drive2")
