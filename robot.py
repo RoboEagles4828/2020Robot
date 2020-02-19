@@ -2,6 +2,7 @@
 import logging
 import wpilib
 import ctre
+from robotpy_ext.autonomous.selector import AutonomousModeSelector
 
 import config
 from components.low.analog_input import AnalogInput
@@ -18,6 +19,8 @@ class Robot(wpilib.TimedRobot):
         self.logger = logging.getLogger("Robot")
         # Create timer
         self.timer = wpilib.Timer()
+        # Create autonomous selector
+        self.auton_mode = AutonomousModeSelector("autonomous")
         # Create components list
         self.components = list()
         # Create joystick
@@ -70,13 +73,11 @@ class Robot(wpilib.TimedRobot):
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
-        self.state = 0
-        self.navx.reset()
-        self.navx.resetDisplacement()
-        self.drivetrain.reset_distance()
-        self.timer.reset()
 
     def autonomousPeriodic(self):
+        self.auton_mode.run(iter_fn=self.autonomous)
+
+    def autonomous(self):
         """Autonomous mode periodic (20ms)"""
         # Run each component's execute function
         for component in self.components:
@@ -84,9 +85,6 @@ class Robot(wpilib.TimedRobot):
                 component.execute()
             except Exception as exception:
                 self.logger.exception(exception)
-        # Auton mode 1
-
-        # Auton Mode 2
 
     def teleopInit(self):
         """Teleoperated mode initialization"""
