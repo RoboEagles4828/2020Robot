@@ -10,7 +10,7 @@ class DoubleShoot6(StatefulAutonomous):
     drivetrain: Drivetrain
     navx: navx
 
-    MODE_NAME = "Shoot 3 Go Back"
+    MODE_NAME = "Shoot 5 Left"
 
     @state(first=True)
     def drive1(self, initial_call):
@@ -33,15 +33,15 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.navx.reset()
         self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED,-config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -90:
+        if self.navx.getAngle() > 90:
             self.next_state("drive3")
 
     @state
     def drive3(self, initial_call):
         if initial_call:
             self.drivetrain.reset_distance()
-        self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED, config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() > 124.52:
+        self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED, -config.Robot.DRIVE_SPEED)
+        if self.drivetrain.get_distance() < -124.52:
             self.next_state("turn2")
 
     @state
@@ -49,7 +49,7 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.navx.reset()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED, config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() > 60.845:
+        if self.navx.getAngle() < -60.845:
             self.next_state("shoot")
 
     @timed_state(duration=7.0, next_state="turn3")
@@ -63,8 +63,8 @@ class DoubleShoot6(StatefulAutonomous):
             self.navx.reset()
             self.shooter.set_conveyor_speed(0)
             self.shooter.set_shooter_speed(0)
-        self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED, -config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -60.845:
+        self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED, config.Robot.DRIVE_TURN_SPEED)
+        if self.navx.getAngle() < -29.155:
             self.next_state("end")
 
     @state

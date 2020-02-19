@@ -17,7 +17,7 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.navx.reset()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED,config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() > 29.155:
+        if self.navx.getAngle() < -29.155:
             self.next_state("shoot")
 
     @timed_state(duration=3.0, next_state="turn")
@@ -26,9 +26,11 @@ class DoubleShoot6(StatefulAutonomous):
         self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
 
     @state
-    def turn1(self):
+    def turn1(self, initial_call):
+        if initial_call:
+            self.navx.reset()
         self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED,-config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle < 0:
+        if self.navx.getAngle > 29.155:
             self.next_state("drive1")
     
     @state
@@ -47,14 +49,14 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.navx.reset()
         self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED,-config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() % 360 < -90:
+        if self.navx.getAngle() % 360 > 90:
             self.next_state("drive2")
 
     @state
     def drive2(self, initial_call):
         if initial_call:
             self.drivetrain.reset_distance()
-        self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED,cofig.Robot.DRIVE_SPEED)
+        self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED,config.Robot.DRIVE_SPEED)
         if self.drivetrain.get_distance() > 56:
             self.next_state("turn3")
 
@@ -63,7 +65,7 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.navx.reset()
         self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED,-config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle % 360 < -22.5:
+        if self.navx.getAngle % 360 > 22.5:
             self.next_state("drive3")
         
     @state
@@ -85,8 +87,8 @@ class DoubleShoot6(StatefulAutonomous):
     def turn4(self, initial_call):
         if initial_call:
             self.navx.reset()
-        self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED,config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -67.5:
+        self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED, -config.Robot.DRIVE_TURN_SPEED)
+        if self.navx.getAngle() > 67.5:
             self.next_state("drive5")
 
     @state
