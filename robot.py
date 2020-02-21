@@ -57,9 +57,9 @@ class Robot(wpilib.TimedRobot):
             config.Ports.Shooter.CONVEYOR_PROX_BACK)
         shooter_left = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_LEFT)
         shooter_right = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_RIGHT)
-        shooter_piston_0 = wpilib.DoubleSolenoid(
+        shooter_piston_0 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_0)
-        shooter_piston_1 = wpilib.DoubleSolenoid(
+        shooter_piston_1 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_1)
         self.shooter = Shooter(intake, intake_motor, conveyor,
                                conveyor_prox_front, conveyor_prox_back,
@@ -67,7 +67,7 @@ class Robot(wpilib.TimedRobot):
                                shooter_piston_1)
         self.components.append(self.shooter)
         # Create compressor
-        wpilib.Compressor(0).setClosedLoopControl(True)
+        wpilib.Compressor(20).setClosedLoopControl(True)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""

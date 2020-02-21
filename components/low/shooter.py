@@ -63,8 +63,8 @@ class Shooter:
         self.shooter_left.set(self.shooter_speed)
         self.shooter_right.set(-self.shooter_speed)
         if self.shooter_status:
-            self.shooter_piston_0.set(wpilib.DoubleSolenoid.Value.kForward)
-            self.shooter_piston_1.set(wpilib.DoubleSolenoid.Value.kForward)
+            self.shooter_piston_0.set(wpilib.Solenoid.Value.kForward)
+            self.shooter_piston_1.set(wpilib.Solenoid.Value.kForward)
         else:
-            self.shooter_piston_0.set(wpilib.DoubleSolenoid.Value.kReverse)
-            self.shooter_piston_1.set(wpilib.DoubleSolenoid.Value.kReverse)
+            self.shooter_piston_0.set(wpilib.Solenoid.Value.kReverse)
+            self.shooter_piston_1.set(wpilib.Solenoid.Value.kReverse)
