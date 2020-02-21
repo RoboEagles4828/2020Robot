@@ -49,8 +49,8 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.drivetrain)
         # Create shooter
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
-        intake_motor = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE_MOTOR)
-        conveyor = ctre.WPI_TalonSRX(config.Ports.Shooter.CONVEYOR)
+        intake_motor = ctre.WPI_VictorSPX(config.Ports.Shooter.INTAKE_MOTOR)
+        conveyor = ctre.VictorSPX(config.Ports.Shooter.CONVEYOR)
         conveyor_prox_front = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_FRONT)
         conveyor_prox_back = wpilib.DigitalInput(
@@ -107,11 +107,11 @@ class Robot(wpilib.TimedRobot):
             else:
                 self.shooter.set_conveyor_speed(0)
                 self.shooter.set_shooter_speed(0)
-            if self.shooter.get_conveyor_prox_front(
-            ) and not self.shooter.get_conveyor_prox_back():
-                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-            else:
-                self.shooter.set_conveyor_speed(0)
+            #if self.shooter.get_conveyor_prox_front(
+            #) and not self.shooter.get_conveyor_prox_back():
+            #    self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
+            #else:
+            #    self.shooter.set_conveyor_speed(0)
         except Exception as exception:
             self.logger.exception(exception)
 
