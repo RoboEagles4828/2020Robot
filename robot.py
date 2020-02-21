@@ -61,7 +61,7 @@ class Robot(wpilib.TimedRobot):
             config.Ports.Shooter.SHOOTER_PISTON_0)
         shooter_piston_1 = wpilib.DoubleSolenoid(
             config.Ports.Shooter.SHOOTER_PISTON_1)
-        self.shooter = Shooter(intake, intake_piston, conveyor,
+        self.shooter = Shooter(intake, intake_motor, conveyor,
                                conveyor_prox_front, conveyor_prox_back,
                                shooter_left, shooter_right, shooter_piston_0,
                                shooter_piston_1)
