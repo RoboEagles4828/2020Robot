@@ -6,14 +6,14 @@ import wpilib
 class Shooter:
     """Shooter class"""
     def __init__(
-        self, intake: ctre.WPI_TalonSRX, intake_piston: wpilib.DoubleSolenoid,
+        self, intake: ctre.WPI_TalonSRX, intake_motor: ctre.WPI_TalonSRX,
         conveyor: ctre.WPI_TalonSRX, conveyor_prox_front: wpilib.DigitalInput,
         conveyor_prox_back: wpilib.DigitalInput,
         shooter_left: ctre.WPI_TalonSRX, shooter_right: ctre.WPI_TalonSRX,
         shooter_piston_0: wpilib.DoubleSolenoid,
         shooter_piston_1: wpilib.DoubleSolenoid):
         self.intake = intake
-        self.intake_piston = intake_piston
+        self.intake_motor = intake_motor
         self.conveyor = conveyor
         self.conveyor_prox_front = conveyor_prox_front
         self.conveyor_prox_back = conveyor_prox_back
@@ -51,11 +51,12 @@ class Shooter:
         return self.conveyor_prox_back_status
 
     def execute(self):
-        self.intake.set(self.intake_speed)
         if self.intake_status:
-            self.intake_piston.set(wpilib.DoubleSolenoid.Value.kForward)
+            self.intake_motor.set(.5)
+            self.intake_status = False
         else:
-            self.intake_piston.set(wpilib.DoubleSolenoid.Value.kReverse)
+            self.intake_motor.set(0)
+        self.intake.set(self.intake_speed)
         self.conveyor.set(self.conveyor_speed)
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = self.conveyor_prox_back.get()

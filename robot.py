@@ -49,8 +49,7 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.drivetrain)
         # Create shooter
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
-        intake_piston = wpilib.DoubleSolenoid(
-            config.Ports.Shooter.INTAKE_PISTON)
+        intake_motor = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE_MOTOR)
         conveyor = ctre.WPI_TalonSRX(config.Ports.Shooter.CONVEYOR)
         conveyor_prox_front = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_FRONT)

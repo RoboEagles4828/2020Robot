@@ -18,7 +18,7 @@ class Ports:
 
     class Shooter:
         INTAKE = 5
-        INTAKE_PISTON = 6
+        INTAKE_MOTOR = 6
         CONVEYOR = 7
         CONVEYOR_PROX_FRONT = 8
         CONVEYOR_PROX_BACK = 9
