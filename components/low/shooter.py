@@ -10,8 +10,7 @@ class Shooter:
         conveyor: ctre.VictorSPX, conveyor_prox_front: wpilib.DigitalInput,
         conveyor_prox_back: wpilib.DigitalInput,
         shooter_left: ctre.WPI_TalonSRX, shooter_right: ctre.WPI_TalonSRX,
-        shooter_piston_0: wpilib.DoubleSolenoid,
-        shooter_piston_1: wpilib.DoubleSolenoid):
+        shooter_piston_0: wpilib.Solenoid, shooter_piston_1: wpilib.Solenoid):
         self.intake = intake
         self.intake_motor = intake_motor
         self.conveyor = conveyor
@@ -28,7 +27,6 @@ class Shooter:
         self.conveyor_prox_back_status = False
         self.shooter_speed = 0
         self.shooter_status = False
-        self.control_mode = ctre.ControlMode(0)
 
     def set_intake_speed(self, speed):
         self.intake_speed = speed
@@ -53,19 +51,15 @@ class Shooter:
 
     def execute(self):
         if self.intake_status:
-            self.intake_motor.set(self.control_mode.PercentOutput, .5)
+            self.intake_motor.set(ctre.ControlMode.PercentOutput, .5)
             self.intake_status = False
         else:
-            self.intake_motor.set(self.control_mode.PercentOutput, 0)
+            self.intake_motor.set(ctre.ControlMode.PercentOutput, 0)
         self.intake.set(self.intake_speed)
-        self.conveyor.set(self.control_mode.PercentOutput, self.conveyor_speed)
+        self.conveyor.set(ctre.ControlMode.PercentOutput, self.conveyor_speed)
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = self.conveyor_prox_back.get()
         self.shooter_left.set(self.shooter_speed)
         self.shooter_right.set(-self.shooter_speed)
-        if self.shooter_status:
-            self.shooter_piston_0.set(wpilib.Solenoid.Value.kForward)
-            self.shooter_piston_1.set(wpilib.Solenoid.Value.kForward)
-        else:
-            self.shooter_piston_0.set(wpilib.Solenoid.Value.kReverse)
-            self.shooter_piston_1.set(wpilib.Solenoid.Value.kReverse)
+        self.shooter_piston_0.set(self.shooter_status)
+        self.shooter_piston_1.set(self.shooter_status)

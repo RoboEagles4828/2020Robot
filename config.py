@@ -24,8 +24,8 @@ class Ports:
         CONVEYOR_PROX_BACK = 9
         SHOOTER_LEFT = 11
         SHOOTER_RIGHT = 12
-        SHOOTER_PISTON_0 = 13
-        SHOOTER_PISTON_1 = 14
+        SHOOTER_PISTON_0 = 5
+        SHOOTER_PISTON_1 = 7
 
 
 class Buttons:
