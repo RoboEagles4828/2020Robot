@@ -18,8 +18,13 @@ class Robot(wpilib.TimedRobot):
         self.logger = logging.getLogger("Robot")
         # Create timer
         self.timer = wpilib.Timer()
+        # Create compressor
+        wpilib.Compressor(0).setClosedLoopControl(True)
         # Create camera server
         wpilib.CameraServer.launch()
+        # Create camera servos
+        self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
+        self.camera_servo_pitch = wpilib.Servo(config.Ports.CAMERA_SERVO_PITCH)
         # Create components list
         self.components = list()
         # Create joystick
@@ -51,7 +56,8 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.drivetrain)
         # Create shooter
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
-        intake_motor = ctre.WPI_VictorSPX(config.Ports.Shooter.INTAKE_MOTOR)
+        intake_control = ctre.WPI_VictorSPX(
+            config.Ports.Shooter.INTAKE_CONTROL)
         conveyor = ctre.VictorSPX(config.Ports.Shooter.CONVEYOR)
         conveyor_prox_front = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_FRONT)
@@ -63,19 +69,11 @@ class Robot(wpilib.TimedRobot):
             config.Ports.Shooter.SHOOTER_PISTON_0)
         shooter_piston_1 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_1)
-        self.shooter = Shooter(intake, intake_motor, conveyor,
+        self.shooter = Shooter(intake, intake_control, conveyor,
                                conveyor_prox_front, conveyor_prox_back,
                                shooter_left, shooter_right, shooter_piston_0,
                                shooter_piston_1)
         self.components.append(self.shooter)
-        # Cooling
-        self.cooling_0 = wpilib.Solenoid(1)
-        self.cooling_1 = wpilib.Solenoid(3)
-        # Create compressor
-        wpilib.Compressor(0).setClosedLoopControl(True)
-        # Create camera servos
-        self.camera_servo_yaw = wpilib.Servo(1)
-        self.camera_servo_pitch = wpilib.Servo(0)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
@@ -110,34 +108,20 @@ class Robot(wpilib.TimedRobot):
             else:
                 self.shooter.set_intake_speed(0)
             if self.joystick.getRawButton(config.Buttons.Shooter.SHOOTER):
-                #self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
+                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
                 self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
             else:
-                #self.shooter.set_conveyor_speed(0)
+                if self.shooter.get_conveyor_prox_front(
+                ) and not self.shooter.get_conveyor_prox_back():
+                    self.shooter.set_conveyor_speed(
+                        config.Robot.CONVEYOR_SPEED)
+                else:
+                    self.shooter.set_conveyor_speed(0)
                 self.shooter.set_shooter_speed(0)
-            if self.joystick.getRawButton(10):
-                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-            else:
-                self.shooter.set_conveyor_speed(0)
-            if self.joystick.getRawButton(11):
+            if self.joystick.getPOV() == 180:
                 self.shooter.set_shooter(True)
-            else:
+            elif self.joystick.getPOV() == 0:
                 self.shooter.set_shooter(False)
-            #if self.shooter.get_conveyor_prox_front(
-            #) and not self.shooter.get_conveyor_prox_back():
-            #    self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-            #else: 
-            #    self.shooter.set_conveyor_speed(0)
-            print("Yaw: %f" % (self.camera_servo_yaw.get()))
-            print("Pitch: %f" % (self.camera_servo_pitch.get()))
-            if self.joystick.getPOV() == 0:
-                self.camera_servo_pitch.set(self.camera_servo_pitch.get() + 0.01)
-            elif self.joystick.getPOV() == 90:
-                self.camera_servo_yaw.set(self.camera_servo_yaw.get() + 0.01)
-            elif self.joystick.getPOV() == 180:
-                self.camera_servo_pitch.set(self.camera_servo_pitch.get() - 0.01)
-            elif self.joystick.getPOV() == 270:
-                self.camera_servo_yaw.set(self.camera_servo_yaw.get() - 0.01)
         except Exception as exception:
             self.logger.exception(exception)
 

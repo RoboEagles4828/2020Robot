@@ -10,6 +10,10 @@ class Robot:
 
 
 class Ports:
+
+    CAMERA_SERVO_YAW = 1
+    CAMERA_SERVO_PITCH = 0
+
     class Drivetrain:
         LEFT_0 = 1
         LEFT_1 = 2
@@ -18,7 +22,7 @@ class Ports:
 
     class Shooter:
         INTAKE = 5
-        INTAKE_MOTOR = 6
+        INTAKE_CONTROL = 6
         CONVEYOR = 7
         CONVEYOR_PROX_FRONT = 8
         CONVEYOR_PROX_BACK = 9
