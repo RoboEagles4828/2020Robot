@@ -7,6 +7,7 @@ class Robot:
     INTAKE_SPEED = 1
     CONVEYOR_SPEED = 1
     SHOOTER_SPEED = 1
+    VISION_RATIO = 0.5
 
 
 class Ports:
@@ -33,6 +34,9 @@ class Ports:
 
 
 class Buttons:
+    class Drivetrain:
+        VISION = 7
+
     class Shooter:
         INTAKE = 2
         SHOOTER = 1

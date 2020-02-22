@@ -2,6 +2,7 @@
 import logging
 import wpilib
 import ctre
+from networktables import NetworkTables
 
 import config
 from components.low.analog_input import AnalogInput
@@ -25,6 +26,8 @@ class Robot(wpilib.TimedRobot):
         # Create camera servos
         self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
         self.camera_servo_pitch = wpilib.Servo(config.Ports.CAMERA_SERVO_PITCH)
+        # Get pi network table
+        self.nt_pi = NetworkTables.getTable("pi")
         # Create components list
         self.components = list()
         # Create joystick
@@ -96,9 +99,14 @@ class Robot(wpilib.TimedRobot):
                 self.logger.exception(exception)
         # Drivetrain
         try:
-            self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
-                                                self.joystick_y.get(),
-                                                self.joystick_twist.get())
+            if self.joystick.getRawButton(config.Buttons.Drivetrain.VISION):
+                value = self.nt_pi.getNumber("value",
+                                             0) * config.Robot.VISION_RATIO
+                self.drivetrain.set_speeds(value, -value)
+            else:
+                self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
+                                                    self.joystick_y.get(),
+                                                    self.joystick_twist.get())
         except Exception as exception:
             self.logger.exception(exception)
         # Shooter
