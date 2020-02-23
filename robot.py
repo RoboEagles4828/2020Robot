@@ -77,6 +77,13 @@ class Robot(wpilib.TimedRobot):
                                shooter_left, shooter_right, shooter_piston_0,
                                shooter_piston_1)
         self.components.append(self.shooter)
+        # Create climber
+        climber_0 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_0)
+        climber_1 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_1)
+        winch_0 = ctre.WPI_TalonFX(config.Ports.Climber.WINCH_0)
+        winch_1 = ctre.WPI_TalonFX(config.Ports.Climber.WINCH_1)
+        self.climber = Climber(climber_0, climber_1, winch_0, winch_1)
+        self.components.append(self.climber)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
