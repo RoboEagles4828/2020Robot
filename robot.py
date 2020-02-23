@@ -9,6 +9,7 @@ from components.low.analog_input import AnalogInput
 from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
+from components.low.climber import Climber
 
 
 class Robot(wpilib.TimedRobot):
