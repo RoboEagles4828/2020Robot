@@ -62,7 +62,7 @@ class Robot(wpilib.TimedRobot):
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
         intake_control = ctre.WPI_VictorSPX(
             config.Ports.Shooter.INTAKE_CONTROL)
-        conveyor = ctre.VictorSPX(config.Ports.Shooter.CONVEYOR)
+        conveyor = ctre.WPI_VictorSPX(config.Ports.Shooter.CONVEYOR)
         conveyor_prox_front = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_FRONT)
         conveyor_prox_back = wpilib.DigitalInput(
