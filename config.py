@@ -4,11 +4,12 @@ class Robot:
     JOYSTICK_TWIST_MAP_A = 0.25
     JOYSTICK_DEADZONE = 0.05
     JOYSTICK_AVERAGE_PERIOD = 0
+    VISION_RATIO = 0.5
     INTAKE_SPEED = 1
     CONVEYOR_SPEED = 1
     SHOOTER_SPEED = 1
-    VISION_RATIO = 0.5
     CLIMBER_SPEED = 0.25
+    WINCH_SPEED = 1
 
 
 class Ports:
@@ -34,22 +35,31 @@ class Ports:
         SHOOTER_PISTON_1 = 7
 
     class Climber:
+<<<<<<< HEAD
         CLIMBER_0 = 13
         CLIMBER_1 = --
         WINCH_0_0 = 14
         WINCH_0_1 = 15
         WINCH_1_0 = --
         WINCH_1_1 = --
+=======
+        CLIMBER_0 = 9
+        CLIMBER_1 = 10
+        WINCH_0_0 = 11
+        WINCH_0_1 = 12
+        WINCH_1_0 = 13
+        WINCH_1_1 = 14
+>>>>>>> d383c8ab49b77013f9ff85fe88d9f4e89605b603
 
 
 class Buttons:
     class Drivetrain:
-        VISION = 7
+        VISION = 9
 
     class Shooter:
         INTAKE = 2
         SHOOTER = 1
-    
+
     class Climber:
         UP = 7
         DOWN = 8
