@@ -34,10 +34,12 @@ class Ports:
         SHOOTER_PISTON_1 = 7
 
     class Climber:
-        CLIMBER_0 = 9
-        CLIMBER_1 = 10
-        WINCH_0 = 11
-        WINCH_1 = 12
+        CLIMBER_0 = 13
+        CLIMBER_1 = --
+        WINCH_0_0 = 14
+        WINCH_0_1 = 15
+        WINCH_1_0 = --
+        WINCH_1_1 = --
 
 
 class Buttons:
