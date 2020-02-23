@@ -10,7 +10,21 @@ class Robot:
     INTAKE_SPEED = 1.0
     CONVEYOR_SPEED = 1.0
     SHOOTER_SPEED = 0.8
-
+class Autonomous:
+    POS_1_FORWARD = 43.3
+    POS_1_TO_TRENCH = 66.9
+    POS_1_TRENCH = 156.3
+    POS_2_TURN = 29.14
+    POS_2_TRENCH = 194.6
+    POS_3_SHOOT = 134.9
+    POS_3_TURN = 60.86
+    POS_3_TRENCH = 130.4
+    DRIVE_DISTANCE = 50.0
+    DSHOOT_8_TO_MID = 60.04
+    DSHOOT_8_TURN = 22.5
+    DSHOOT_8_FORWARD_MID = 86.25
+    DSHOOT_8_BACK_MID = 68.3
+    DSHOOT_SHOOT = 178.04
 
 class Ports:
     class Drivetrain:

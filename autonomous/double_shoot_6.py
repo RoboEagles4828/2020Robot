@@ -18,13 +18,13 @@ class DoubleShoot6(StatefulAutonomous):
 
     @state
     def drive1(self, initial_call):
-        self.shooter.set_conveyor_speed(0)
-        self.shooter.set_shooter_speed(0)
         if initial_call:
             self.drivetrain.reset_distance()
+            self.shooter.set_conveyor_speed(0)
+            self.shooter.set_shooter_speed(0)
         self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED,
                                    config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() > 43.315:
+        if self.drivetrain.get_distance() > config.Autonomous.POS_1_FORWARD:
             self.next_state("turn1")
 
     @state
@@ -42,7 +42,7 @@ class DoubleShoot6(StatefulAutonomous):
             self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED,
                                    config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() > 66.91:
+        if self.drivetrain.get_distance() > config.Autonomous.POS_1_TO_TRENCH:
             self.next_state("turn2")
 
     @state
@@ -61,7 +61,7 @@ class DoubleShoot6(StatefulAutonomous):
         self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED,
                                    config.Robot.DRIVE_SPEED)
         self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
-        if self.drivetrain.get_distance() > 156.315:
+        if self.drivetrain.get_distance() > config.Autonomous.POS_1_TRENCH:
             self.next_state("drive4")
 
     @state
@@ -70,7 +70,7 @@ class DoubleShoot6(StatefulAutonomous):
             self.drivetrain.reset()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED,
                                    -config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() < -156.315:
+        if self.drivetrain.get_distance() < -config.Autonomous.POS_1_TRENCH:
             self.next_state("turn3")
 
     @state
@@ -88,7 +88,7 @@ class DoubleShoot6(StatefulAutonomous):
             self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED,
                                    -config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() < -66.91:
+        if self.drivetrain.get_distance() < -config.Autonomous.POS_1_TO_TRENCH:
             self.next_state("turn4")
 
     @state
@@ -106,12 +106,13 @@ class DoubleShoot6(StatefulAutonomous):
             self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED,
                                    -config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() < -43.315:
+        if self.drivetrain.get_distance() < -config.Autonomous.POS_1_FORWARD:
             self.next_state("shoot2")
 
     @timed_state(duration=5.0, next_state="end")
-    def shoot2(self):
-        self.drivetrain.set_speeds(0, 0)
+    def shoot2(self, initial_call):
+        if initial_call:
+            self.drivetrain.set_speeds(0, 0)
         self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
         self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
 

@@ -17,7 +17,7 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED, config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() > 130.36:
+        if self.drivetrain.get_distance() > config.Autonomous.POS_3_TRENCH:
             self.next_state("drive2")
     
     @state
@@ -25,7 +25,7 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED, -config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance < -130.36:
+        if self.drivetrain.get_distance < -config.Autonomous.POS_3_TRENCH:
             self.next_state("turn1")
 
     @state
@@ -41,7 +41,7 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.drivetrain.reset_distance()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED, -config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() < -124.52:
+        if self.drivetrain.get_distance() < -config.Autonomous.POS_3_SHOOT:
             self.next_state("turn2")
 
     @state
@@ -49,11 +49,13 @@ class DoubleShoot6(StatefulAutonomous):
         if initial_call:
             self.navx.reset()
         self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED, config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -60.845:
+        if self.navx.getAngle() < -config.Autonomous.POS_3_TURN:
             self.next_state("shoot")
 
     @timed_state(duration=7.0, next_state="turn3")
-    def shoot(self):
+    def shoot(self, initial_call):
+        if initial_call:
+            self.drivetrain.set_speeds(0,0)
         self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
         self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
     
@@ -64,7 +66,7 @@ class DoubleShoot6(StatefulAutonomous):
             self.shooter.set_conveyor_speed(0)
             self.shooter.set_shooter_speed(0)
         self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED, config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -29.155:
+        if self.navx.getAngle() < -config.Autonomous.POS_2_TURN:
             self.next_state("end")
 
     @state

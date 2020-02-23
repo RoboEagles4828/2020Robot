@@ -24,7 +24,7 @@ class DoubleShoot6(StatefulAutonomous):
             self.shooter.set_conveyor_speed(0)
             self.shooter.set_shooter_speed(0)
         self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED,-config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() < -50.0:
+        if self.drivetrain.get_distance() < -config.Autonomous.DRIVE_DISTANCE:
             self.next_state("end")
     
     @state
