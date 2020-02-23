@@ -2,6 +2,8 @@
 import ctre
 import wpilib
 
+import config
+
 
 class Shooter:
     """Shooter class"""
@@ -22,7 +24,6 @@ class Shooter:
         self.shooter_piston_1 = shooter_piston_1
         self.intake_speed = 0
         self.intake_control_speed = 0
-        self.conveyor_speed = 0
         self.conveyor_prox_front_status = False
         self.conveyor_prox_back_status = False
         self.shooter_speed = 0
@@ -33,9 +34,6 @@ class Shooter:
 
     def set_intake_control_speed(self, speed):
         self.intake_control_speed = speed
-
-    def set_conveyor_speed(self, speed):
-        self.conveyor_speed = speed
 
     def get_conveyor_prox_front(self):
         return self.conveyor_prox_front_status
@@ -52,9 +50,13 @@ class Shooter:
     def execute(self):
         self.intake.set(self.intake_speed)
         self.intake_control.set(self.intake_control_speed)
-        self.conveyor.set(self.conveyor_speed)
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = self.conveyor_prox_back.get()
+        if self.shooter_speed != 0 or (self.get_conveyor_prox_front()
+                                       and not self.get_conveyor_prox_back()):
+            self.conveyor.set(config.Shooter.CONVEYOR_SPEED)
+        else:
+            self.conveyor.set(0)
         self.shooter_left.set(self.shooter_speed)
         self.shooter_right.set(-self.shooter_speed)
         self.shooter_piston_0.set(self.shooter_status)
