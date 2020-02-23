@@ -8,6 +8,7 @@ class Robot:
     CONVEYOR_SPEED = 1
     SHOOTER_SPEED = 1
     VISION_RATIO = 0.5
+    CLIMBER_SPEED = 0.25
 
 
 class Ports:
@@ -31,6 +32,12 @@ class Ports:
         SHOOTER_RIGHT = 12
         SHOOTER_PISTON_0 = 5
         SHOOTER_PISTON_1 = 7
+
+    class Climber:
+        CLIMBER_0 = 9
+        CLIMBER_1 = 10
+        WINCH_0 = 11
+        WINCH_1 = 12
 
 
 class Buttons:
