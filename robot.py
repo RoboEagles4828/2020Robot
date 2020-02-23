@@ -81,9 +81,12 @@ class Robot(wpilib.TimedRobot):
         # Create climber
         climber_0 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_0)
         climber_1 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_1)
-        winch_0 = ctre.WPI_TalonFX(config.Ports.Climber.WINCH_0)
-        winch_1 = ctre.WPI_TalonFX(config.Ports.Climber.WINCH_1)
-        self.climber = Climber(climber_0, climber_1, winch_0, winch_1)
+        winch_0_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_0_0)
+        winch_0_1 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_0_1)
+        winch_1_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_1_0)
+        winch_1_1 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_1_1)
+        self.climber = Climber(climber_0, climber_1, winch_0_0, winch_0_1,
+                               winch_1_0, winch_1_1)
         self.components.append(self.climber)
 
     def autonomousInit(self):
@@ -143,15 +146,14 @@ class Robot(wpilib.TimedRobot):
         # Climber
         try:
             if self.joystick.getRawButton(config.Buttons.Climber.UP):
-                self.climber.set_climber_speed(
-                    config.Robot.Climber.CLIMBER_SPEED)
+                self.climber.set_climber_speed(config.Robot.CLIMBER_SPEED)
+                self.climber.set_winch_speed(config.Robot.WINCH_SPEED)
+            elif self.joystick.getRawButton(config.Buttons.Climber.DOWN):
+                self.climber.set_climber_speed(-config.Robot.CLIMBER_SPEED)
+                self.climber.set_winch_speed(-config.Robot.WINCH_SPEED)
             else:
                 self.climber.set_climber_speed(0)
-            if self.joystick.getRawButton(config.Buttons.Climber.DOWN):
-                self.climber.set_climber_speed(
-                    -config.Robot.Climber.CLIMBER_SPEED)
-            else:
-                self.climber.set_climber_speed(0)
+                self.climber.set_winch_speed(0)
         except Exception as exception:
             self.logger.exception(exception)
 
