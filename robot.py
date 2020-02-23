@@ -5,6 +5,7 @@ import ctre
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 
 import config
+from autonomous.autonomous import Autonomous
 from components.low.analog_input import AnalogInput
 from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
@@ -70,14 +71,16 @@ class Robot(wpilib.TimedRobot):
                                shooter_left, shooter_right, shooter_piston_0,
                                shooter_piston_1)
         self.components.append(self.shooter)
+        # Create autonomous helper
+        self.autonomous = Autonomous(self.drivetrain, self.navx)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
 
     def autonomousPeriodic(self):
-        self.auton_mode.run(iter_fn=self.autonomous)
+        self.auton_mode.run(iter_fn=self.autonomous_iter)
 
-    def autonomous(self):
+    def autonomous_iter(self):
         """Autonomous mode periodic (20ms)"""
         # Run each component's execute function
         for component in self.components:
