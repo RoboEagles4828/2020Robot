@@ -140,6 +140,20 @@ class Robot(wpilib.TimedRobot):
                 self.shooter.set_shooter(False)
         except Exception as exception:
             self.logger.exception(exception)
+        # Climber
+        try:
+            if self.joystick.getRawButton(config.Buttons.Climber.UP):
+                self.climber.set_climber_speed(
+                    config.Robot.Climber.CLIMBER_SPEED)
+            else:
+                self.climber.set_climber_speed(0)
+            if self.joystick.getRawButton(config.Buttons.Climber.DOWN):
+                self.climber.set_climber_speed(
+                    -config.Robot.Climber.CLIMBER_SPEED)
+            else:
+                self.climber.set_climber_speed(0)
+        except Exception as exception:
+            self.logger.exception(exception)
 
     def disabledInit(self):
         """Disabled mode initialization"""
