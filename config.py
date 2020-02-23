@@ -47,3 +47,7 @@ class Buttons:
     class Shooter:
         INTAKE = 2
         SHOOTER = 1
+    
+    class Climber:
+        UP = 7
+        DOWN = 8
