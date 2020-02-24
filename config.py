@@ -16,8 +16,10 @@ class Autonomous:
     POS_1_FORWARD = 43.3
     POS_1_TO_TRENCH = 66.9
     POS_1_TRENCH = 156.3
+    POS_2_TRENCH_TURN = 17.9
     POS_2_TURN = 29.1
-    POS_2_TRENCH = 194.6
+    POS_2_TO_TRENCH = 86.6
+    POS_2_TRENCH = 108
     POS_3_SHOOT = 134.9
     POS_3_TURN = 60.9
     POS_3_TRENCH = 130.4

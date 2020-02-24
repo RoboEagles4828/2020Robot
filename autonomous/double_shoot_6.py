@@ -56,29 +56,12 @@ class DoubleShoot6(StatefulAutonomous):
     def drive4(self, initial_call):
         self.shooter.set_intake_speed(0)
         if self.autonomous.drive(initial_call,
-                                 -config.Autonomous.POS_1_TRENCH):
+                                 -config.Autonomous.POS_2_TRENCH):
             self.next_state("turn3")
-
+    
     @state
     def turn3(self, initial_call):
-        if self.autonomous.turn(initial_call, -90):
-            self.next_state("drive5")
-
-    @state
-    def drive5(self, initial_call):
-        if self.autonomous.drive(initial_call,
-                                 -config.Autonomous.POS_1_TO_TRENCH):
-            self.next_state("turn4")
-
-    @state
-    def turn4(self, initial_call):
-        if self.autonomous.turn(initial_call, 90):
-            self.next_state("drive6")
-
-    @state
-    def drive6(self, initial_call):
-        if self.autonomous.drive(initial_call,
-                                 -config.Autonomous.POS_1_FORWARD):
+        if self.autonomous.turn(initial_call, -config.Autonomous.POS_2_TRENCH_TURN):
             self.next_state("shoot2")
 
     @timed_state(duration=5.0, next_state="end")

@@ -37,7 +37,7 @@ class ShootBackLeft(StatefulAutonomous):
     def turn2(self, initial_call):
         self.shooter.set_conveyor_speed(0)
         self.shooter.set_shooter_speed(0)
-        if self.autonomous.turn(initial_call, -config.Autonomous.POS_2_TURN):
+        if self.autonomous.turn(initial_call, 90-config.Autonomous.POS_3_TURN):
             self.next_state("drive1")
     
     @state
