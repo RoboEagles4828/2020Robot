@@ -2,10 +2,12 @@ from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
 import navx
+from autonomous import Autonomous
 from components.low.shooter import Shooter
 from components.low.drivetrain import Drivetrain
 import config
-class DoubleShoot6(StatefulAutonomous):
+class ShootForwardRight(StatefulAutonomous):
+    autonomous: Autonomous
     shooter: Shooter
     drivetrain: Drivetrain
     navx: navx
@@ -14,34 +16,23 @@ class DoubleShoot6(StatefulAutonomous):
     
     @state(first=True)
     def turn(self, initial_call):
-        if initial_call:
-            self.navx.reset()
-        self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED,config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -config.Autonomous.POS_2_TURN:
+        if self.autonomous.turn(initial_call, -config.Autonomous.POS_2_TURN):
             self.next_state("shoot")
 
     @timed_state(duration=3.0, next_state="turn")
     def shoot(self, initial_call):
-        if initial_call:
-            self.drivetrain.set_speeds(0,0)
-        self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-        self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+        self.autonomous.shoot(initial_call)
 
     @state
     def turn1(self, initial_call):
-        if initial_call:
-            self.shooter.set_conveyor_speed(0)
-            self.shooter.set_shooter_speed(0)
-        self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED,-config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle > 0:
+        self.shooter.set_conveyor_speed(0)
+        self.shooter.set_shooter_speed(0)
+        if self.autonomous.turn(initial_call, config.Autonomous.POS_2_TURN):
             self.next_state("drive1")
     
     @state
     def drive1(self, initial_call):
-        if initial_call:
-            self.drivetrain.reset_distance()
-        self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED,config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() > config.Autonomous.DRIVE_DISTANCE:
+        if self.autonomous.drive(initial_call, config.Autonomous.DRIVE_DISTANCE):
             self.next_state("end")
     
     @state

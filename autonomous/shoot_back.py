@@ -2,10 +2,12 @@ from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
 import navx
+from autonomous import Autonomous
 from components.low.shooter import Shooter
 from components.low.drivetrain import Drivetrain
 import config
-class DoubleShoot6(StatefulAutonomous):
+class ShootBack(StatefulAutonomous):
+    autonomous: Autonomous
     shooter: Shooter
     drivetrain: Drivetrain
     navx: navx
@@ -14,17 +16,13 @@ class DoubleShoot6(StatefulAutonomous):
     
     @timed_state(duration=3.0, next_state="drive1", first=True)
     def shoot(self):
-        self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-        self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+        self.autonomous.shoot()
     
     @state
     def drive1(self, initial_call):
-        if initial_call:
-            self.drivetrain.reset_distance()
-            self.shooter.set_conveyor_speed(0)
-            self.shooter.set_shooter_speed(0)
-        self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED,-config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() < -config.Autonomous.DRIVE_DISTANCE:
+        self.shooter.set_conveyor_speed(0)
+        self.shooter.set_shooter_speed(0)
+        if self.autonomous.drive(initial_call, -config.Autonomous.DRIVE_DISTANCE):
             self.next_state("end")
     
     @state

@@ -20,8 +20,7 @@ class DoubleShoot6(StatefulAutonomous):
 
     @timed_state(duration=3.0, next_state="drive1", first=True)
     def shoot1(self):
-        self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-        self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+        self.autonomous.shoot()
 
     @state
     def drive1(self, initial_call):
@@ -83,10 +82,8 @@ class DoubleShoot6(StatefulAutonomous):
             self.next_state("shoot2")
 
     @timed_state(duration=5.0, next_state="end")
-    def shoot2(self):
-        self.drivetrain.set_speeds(0, 0)
-        self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-        self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+    def shoot2(self, initial_call):
+        self.autonomous.shoot(initial_call)
 
     @state
     def end(self):

@@ -2,10 +2,12 @@ from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
 import navx
+from autonomous import Autonomous
 from components.low.shooter import Shooter
 from components.low.drivetrain import Drivetrain
 import config
-class DoubleShoot6(StatefulAutonomous):
+class DoubleShoot6Right(StatefulAutonomous):
+    autonomous: Autonomous
     shooter: Shooter
     drivetrain: Drivetrain
     navx: navx
@@ -14,60 +16,40 @@ class DoubleShoot6(StatefulAutonomous):
 
     @state(first=True)
     def turn(self, initial_call):
-        if initial_call:
-            self.navx.reset()
-        self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED,config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -config.Autonomous.POS_2_TURN:
+        if self.autonomous.turn(-config.Autonomous.POS_2_TURN):
             self.next_state("shoot")
 
     @timed_state(duration=3.0, next_state="turn1")
     def shoot(self, initial_call):
-        if initial_call:
-            self.drivetrain.set_speeds(0,0)
-        self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-        self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+        self.autonomous.shoot(initial_call)
 
     @state
     def turn1(self, initial_call):
-        if initial_call:
-            self.navx.reset()
-        self.drivetrain.set_speeds(config.Robot.DRIVE_TURN_SPEED,-config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle > config.Autonomous.POS_2_TURN:
+        self.shooter.set_conveyor_speed(0)
+        self.shooter.set_shooter_speed(0)
+        if self.autonomous.turn(initial_call, config.Autonomous.POS_2_TURN):
             self.next_state("drive1")
     
     @state
     def drive1(self, initial_call):
-        if initial_call:
-            self.drivetrain.reset()
-            self.shooter.set_conveyor_speed(0)
-            self.shooter.set_shooter_speed(0)
-        self.drivetrain.set_speeds(config.Robot.DRIVE_SPEED,config.Robot.DRIVE_SPEED)
         self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
-        if self.drivetrain.get_distance() > config.Autonomous.POS_2_TRENCH:
+        if self.autonomous.drive(initial_call, config.Autonomous.POS_2_TRENCH):
             self.next_state("drive2")
     
     @state
     def drive2(self, initial_call):
-        if initial_call:
-            self.drivetrain.reset_distance()
-        self.drivetrain.set_speeds(-config.Robot.DRIVE_SPEED,-config.Robot.DRIVE_SPEED)
-        if self.drivetrain.get_distance() < -config.Autonomous.POS_2_TRENCH:
+        self.shooter.set_intake_speed(0)
+        if self.autonomous.drive(initial_call, -config.Autonomous.POS_2_TRENCH):
             self.next_state("turn2")
             
     @state
     def turn2(self, initial_call):
-        if initial_call:
-            self.navx.reset()
-        self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED,config.Robot.DRIVE_TURN_SPEED)
-        if self.navx.getAngle() < -config.Autonomous.POS_2_TURN:
+        if self.autonomous.turn(initial_call, -config.Autonomous.POS_2_TURN):
             self.next_state("shoot1")
 
     @timed_state(duration=7.0, next_state="end")
     def shoot1(self, initial_call):
-        if initial_call:
-            self.drivetrain.set_speeds(0,0)
-        self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
-        self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+        self.autonomous.shoot(initial_call)
     
     @state
     def end(self):

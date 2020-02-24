@@ -7,12 +7,12 @@ class Robot:
     INTAKE_SPEED = 1.0
     CONVEYOR_SPEED = 1.0
     SHOOTER_SPEED = 0.8
-
-
-class Autonomous:
     DRIVE_SPEED = 0.7
     DRIVE_SLOW_SPEED = 0.3
     DRIVE_TURN_SPEED = 0.7
+
+
+class Autonomous:
     POS_1_FORWARD = 43.3
     POS_1_TO_TRENCH = 66.9
     POS_1_TRENCH = 156.3
