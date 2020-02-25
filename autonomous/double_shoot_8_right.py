@@ -55,13 +55,13 @@ class DoubleShoot8Right(StatefulAutonomous):
     @state
     def drive4(self, initial_call):
         self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
-        if self.autonomous.drive(initial_call, config.Autonomous.DS_8_FORWARD_MID, True):
+        if self.autonomous.drive(initial_call, config.Autonomous.DS_8_FORWARD_MID, slow=True):
             self.next_state("drive5")
 
     @state
     def drive5(self, initial_call):
         self.shooter.set_intake_speed(0)
-        if self.autonomous.drive(initial_call, -config.Autonomous.DS_8_BACK_MID, True):
+        if self.autonomous.drive(initial_call, -config.Autonomous.DS_8_BACK_MID, slow=True):
             self.next_state("turn5")
 
     @state
