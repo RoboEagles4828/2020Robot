@@ -5,7 +5,7 @@ class Robot:
     JOYSTICK_DEADZONE = 0.05
     JOYSTICK_AVERAGE_PERIOD = 0
     VISION_RATIO = 0.5
-    INTAKE_SPEED = .6
+    INTAKE_SPEED = 0.6
     SHOOTER_SPEED = 1
     CLIMBER_SPEED = 0.25
     WINCH_SPEED = 1
@@ -52,6 +52,7 @@ class Buttons:
 
     class Shooter:
         INTAKE = 2
+        OUTTAKE = 12
         SHOOTER = 1
 
     class Climber:

@@ -124,6 +124,8 @@ class Robot(wpilib.TimedRobot):
         try:
             if self.joystick.getRawButton(config.Buttons.Shooter.INTAKE):
                 self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
+            elif self.joystick.getRawButton(config.Buttons.Shooter.OUTTAKE):
+                self.shooter.set_intake_speed(-config.Robot.INTAKE_SPEED)
             else:
                 self.shooter.set_intake_speed(0)
             if self.joystick.getRawButton(config.Buttons.Shooter.SHOOTER):
