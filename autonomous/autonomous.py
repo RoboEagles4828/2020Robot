@@ -40,8 +40,9 @@ class Autonomous:
         self.drivetrain.set_speeds(-config.Robot.DRIVE_TURN_SPEED,
                                    config.Robot.DRIVE_TURN_SPEED)
         return self.navx.getAngle() % 360 < angle
+
     def shoot(self, reset: bool):
         if reset:
-            self.drivetrain.set_speeds(0,0)
+            self.drivetrain.set_speeds(0, 0)
         self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
         self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)

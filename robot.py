@@ -2,6 +2,7 @@
 import logging
 import wpilib
 import ctre
+from networktables import NetworkTables
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 
 import config
@@ -10,6 +11,7 @@ from components.low.analog_input import AnalogInput
 from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
+from components.low.climber import Climber
 
 
 class Robot(wpilib.TimedRobot):
@@ -22,6 +24,15 @@ class Robot(wpilib.TimedRobot):
         self.timer = wpilib.Timer()
         # Create autonomous selector
         self.auton_mode = AutonomousModeSelector("autonomous")
+        # Create compressor
+        wpilib.Compressor(0).setClosedLoopControl(True)
+        # Create camera server
+        wpilib.CameraServer.launch()
+        # Create camera servos
+        self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
+        self.camera_servo_pitch = wpilib.Servo(config.Ports.CAMERA_SERVO_PITCH)
+        # Get pi network table
+        self.nt_pi = NetworkTables.getTable("pi")
         # Create components list
         self.components = list()
         # Create joystick
@@ -53,26 +64,36 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.drivetrain)
         # Create shooter
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
-        intake_piston = wpilib.DoubleSolenoid(
-            config.Ports.Shooter.INTAKE_PISTON)
-        conveyor = ctre.WPI_TalonSRX(config.Ports.Shooter.CONVEYOR)
+        intake_control = ctre.WPI_VictorSPX(
+            config.Ports.Shooter.INTAKE_CONTROL)
+        conveyor = ctre.WPI_VictorSPX(config.Ports.Shooter.CONVEYOR)
         conveyor_prox_front = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_FRONT)
         conveyor_prox_back = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_BACK)
         shooter_left = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_LEFT)
         shooter_right = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_RIGHT)
-        shooter_piston_0 = wpilib.DoubleSolenoid(
+        shooter_piston_0 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_0)
-        shooter_piston_1 = wpilib.DoubleSolenoid(
+        shooter_piston_1 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_1)
-        self.shooter = Shooter(intake, intake_piston, conveyor,
+        self.shooter = Shooter(intake, intake_control, conveyor,
                                conveyor_prox_front, conveyor_prox_back,
                                shooter_left, shooter_right, shooter_piston_0,
                                shooter_piston_1)
         self.components.append(self.shooter)
+        # Create climber
+        climber_0 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_0)
+        climber_1 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_1)
+        winch_0_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_0_0)
+        winch_0_1 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_0_1)
+        winch_1_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_1_0)
+        winch_1_1 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_1_1)
+        self.climber = Climber(climber_0, climber_1, winch_0_0, winch_0_1,
+                               winch_1_0, winch_1_1)
+        self.components.append(self.climber)
         # Create autonomous helper
-        self.autonomous = Autonomous(self.drivetrain, self.navx)
+        self.autonomous = Autonomous(self.drivetrain, self.navx, self.shooter)
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
@@ -104,23 +125,45 @@ class Robot(wpilib.TimedRobot):
                 self.logger.exception(exception)
         # Drivetrain
         try:
-            self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
-                                                self.joystick_y.get(),
-                                                self.joystick_twist.get())
+            if self.joystick.getRawButton(config.Buttons.Drivetrain.VISION):
+                value = self.nt_pi.getNumber("value",
+                                             0) * config.Robot.VISION_RATIO
+                self.drivetrain.set_speeds(value, -value)
+            else:
+                self.drivetrain.set_speeds_joystick(self.joystick_x.get(),
+                                                    self.joystick_y.get(),
+                                                    self.joystick_twist.get())
         except Exception as exception:
             self.logger.exception(exception)
         # Shooter
         try:
             if self.joystick.getRawButton(config.Buttons.Shooter.INTAKE):
                 self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
+            elif self.joystick.getRawButton(config.Buttons.Shooter.OUTTAKE):
+                self.shooter.set_intake_speed(-config.Robot.INTAKE_SPEED)
             else:
                 self.shooter.set_intake_speed(0)
             if self.joystick.getRawButton(config.Buttons.Shooter.SHOOTER):
-                self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
                 self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
             else:
-                self.shooter.set_conveyor_speed(0)
                 self.shooter.set_shooter_speed(0)
+            if self.joystick.getPOV() == 180:
+                self.shooter.set_shooter(True)
+            elif self.joystick.getPOV() == 0:
+                self.shooter.set_shooter(False)
+        except Exception as exception:
+            self.logger.exception(exception)
+        # Climber
+        try:
+            if self.joystick.getRawButton(config.Buttons.Climber.UP):
+                self.climber.set_climber_speed(config.Robot.CLIMBER_SPEED)
+                self.climber.set_winch_speed(config.Robot.WINCH_SPEED)
+            elif self.joystick.getRawButton(config.Buttons.Climber.DOWN):
+                self.climber.set_climber_speed(-config.Robot.CLIMBER_SPEED)
+                self.climber.set_winch_speed(-config.Robot.WINCH_SPEED)
+            else:
+                self.climber.set_climber_speed(0)
+                self.climber.set_winch_speed(0)
         except Exception as exception:
             self.logger.exception(exception)
 

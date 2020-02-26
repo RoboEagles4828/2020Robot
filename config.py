@@ -4,12 +4,14 @@ class Robot:
     JOYSTICK_TWIST_MAP_A = 0.25
     JOYSTICK_DEADZONE = 0.05
     JOYSTICK_AVERAGE_PERIOD = 0
-    INTAKE_SPEED = 1.0
-    CONVEYOR_SPEED = 1.0
-    SHOOTER_SPEED = 0.8
     DRIVE_SPEED = 0.7
     DRIVE_SLOW_SPEED = 0.3
     DRIVE_TURN_SPEED = 0.7
+    VISION_RATIO = 0.5
+    INTAKE_SPEED = 0.6
+    SHOOTER_SPEED = 0.8
+    CLIMBER_SPEED = 0.25
+    WINCH_SPEED = 1
 
 
 class Autonomous:
@@ -31,7 +33,15 @@ class Autonomous:
     DS_SHOOT = 178.0
 
 
+class Shooter:
+    CONVEYOR_SPEED = 1
+
+
 class Ports:
+
+    CAMERA_SERVO_YAW = 1
+    CAMERA_SERVO_PITCH = 0
+
     class Drivetrain:
         LEFT_0 = 1
         LEFT_1 = 2
@@ -40,20 +50,36 @@ class Ports:
 
     class Shooter:
         INTAKE = 5
-        INTAKE_PISTON = 6
+        INTAKE_CONTROL = 6
         CONVEYOR = 7
         CONVEYOR_PROX_FRONT = 8
         CONVEYOR_PROX_BACK = 9
-        SHOOTER_LEFT = 10
-        SHOOTER_RIGHT = 11
-        SHOOTER_PISTON_0 = 12
-        SHOOTER_PISTON_1 = 13
+        SHOOTER_LEFT = 11
+        SHOOTER_RIGHT = 12
+        SHOOTER_PISTON_0 = 5
+        SHOOTER_PISTON_1 = 7
+
+    class Climber:
+        CLIMBER_0 = 13
+        CLIMBER_1 = 16
+        WINCH_0_0 = 14
+        WINCH_0_1 = 15
+        WINCH_1_0 = 17
+        WINCH_1_1 = 18
 
 
 class Buttons:
+    class Drivetrain:
+        VISION = 9
+
     class Shooter:
         INTAKE = 2
+        OUTTAKE = 12
         SHOOTER = 1
+
+    class Climber:
+        UP = 7
+        DOWN = 8
 
 
 class DriveTrain:
