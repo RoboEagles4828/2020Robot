@@ -1,27 +1,34 @@
 from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
-import navx
-from autonomous import Autonomous
-from components.low.shooter import Shooter
-from components.low.drivetrain import Drivetrain
-import config
-class Shoot5(StatefulAutonomous):
-    autonomous: Autonomous
-    shooter: Shooter
-    drivetrain: Drivetrain
-    navx: navx
+from navx import AHRS
 
-    MODE_NAME = "Shoot 5 Left"
+import config
+from autonomous import Autonomous
+from components.low.drivetrain import Drivetrain
+from components.low.shooter import Shooter
+
+
+class Shoot5(StatefulAutonomous):
+
+    autonomous: Autonomous
+    drivetrain: Drivetrain
+    navx: AHRS
+    shooter: Shooter
+
+    MODE_NAME = "Shoot 5"
 
     @state(first=True)
     def drive1(self, initial_call):
+        self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
         if self.autonomous.drive(initial_call, config.Autonomous.POS_3_TRENCH):
             self.next_state("drive2")
-    
+
     @state
     def drive2(self, initial_call):
-        if self.autonomous.drive(initial_call, -config.Autonomous.POS_3_TRENCH):
+        self.shooter.set_intake_speed(0)
+        if self.autonomous.drive(initial_call,
+                                 -config.Autonomous.POS_3_TRENCH):
             self.next_state("turn1")
 
     @state
@@ -37,21 +44,18 @@ class Shoot5(StatefulAutonomous):
     @state
     def turn2(self, initial_call):
         if self.autonomous.turn(initial_call, -config.Autonomous.POS_3_TURN):
-            self.next_state("shoot")
+            self.next_state("shoot1")
 
-    @timed_state(duration=7.0, next_state="turn3")
-    def shoot(self, initial_call):
-        self.autonomous.shoot(initial_call)
-    
+    @timed_state(duration=5.0, next_state="turn3")
+    def shoot1(self):
+        self.autonomous.shoot()
+
     @state
     def turn3(self, initial_call):
-        self.shooter.set_conveyor_speed(0)
-        self.shooter.set_shooter_speed(0)
         if self.autonomous.turn(initial_call, -config.Autonomous.POS_2_TURN):
             self.next_state("end")
 
     @state
     def end(self):
-        self.drivetrain.set_speeds(0,0)
+        self.drivetrain.set_speeds(0, 0)
         self.done()
-

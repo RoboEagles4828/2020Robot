@@ -12,6 +12,8 @@ class Autonomous:
         self.shooter = shooter
 
     def drive(self, reset: bool, distance: float, slow=False):
+        self.shooter.set_conveyor_speed(0)
+        self.shooter.set_shooter_speed(0)
         if reset:
             self.drivetrain.reset_distance()
         if distance > 0:
@@ -31,6 +33,8 @@ class Autonomous:
         return self.drivetrain.get_distance() < distance
 
     def turn(self, reset: bool, angle: float):
+        self.shooter.set_conveyor_speed(0)
+        self.shooter.set_shooter_speed(0)
         if reset:
             self.navx.reset()
         if angle > 0:
@@ -41,8 +45,7 @@ class Autonomous:
                                    config.Robot.DRIVE_TURN_SPEED)
         return self.navx.getAngle() % 360 < angle
 
-    def shoot(self, reset: bool):
-        if reset:
-            self.drivetrain.set_speeds(0, 0)
+    def shoot(self):
+        self.drivetrain.set_speeds(0, 0)
         self.shooter.set_conveyor_speed(config.Robot.CONVEYOR_SPEED)
         self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)

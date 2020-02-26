@@ -25,7 +25,8 @@ class DoubleShoot10Left(StatefulAutonomous):
 
     @state
     def drive2(self, initial_call):
-        if self.autonomous.drive(initial_call, -config.Autonomous.POS_3_TRENCH):
+        if self.autonomous.drive(initial_call,
+                                 -config.Autonomous.POS_3_TRENCH):
             self.next_state("turn1")
 
     @state
@@ -43,14 +44,12 @@ class DoubleShoot10Left(StatefulAutonomous):
         if self.autonomous.turn(initial_call, -config.Autonomous.POS_3_TURN):
             self.next_state("shoot1")
 
-    @timed_state(duration=7.0, next_state="turn3")
-    def shoot1(self, initial_call):
-        self.autonomous.shoot(initial_call)
+    @timed_state(duration=3.0, next_state="turn3")
+    def shoot1(self):
+        self.autonomous.shoot()
 
     @state
     def turn3(self, initial_call):
-        self.shooter.set_conveyor_speed(0)
-        self.shooter.set_shooter_speed(0)
         if self.autonomous.turn(initial_call, config.Autonomous.POS_3_TURN):
             self.next_state("drive4")
 
@@ -71,7 +70,8 @@ class DoubleShoot10Left(StatefulAutonomous):
 
     @state
     def turn5(self, initial_call):
-        if self.autonomous.turn(initial_call, config.Autonomous.DS_8_TURN-90):
+        if self.autonomous.turn(initial_call,
+                                config.Autonomous.DS_8_TURN - 90):
             self.next_state("drive6")
 
     @state
@@ -113,12 +113,15 @@ class DoubleShoot10Left(StatefulAutonomous):
     @state
     def drive10(self, initial_call):
         self.shooter.set_intake_speed(0)
-        if self.autonomous.drive(initial_call, -config.Autonomous.DS_8_BACK_MID, slow=True):
+        if self.autonomous.drive(initial_call,
+                                 -config.Autonomous.DS_8_BACK_MID,
+                                 slow=True):
             self.next_state("turn9")
 
     @state
     def turn9(self, initial_call):
-        if self.autonomous.turn(initial_call, 90-config.Autonomous.DS_8_TURN):
+        if self.autonomous.turn(initial_call,
+                                90 - config.Autonomous.DS_8_TURN):
             self.next_state("drive11")
 
     @state
@@ -127,13 +130,13 @@ class DoubleShoot10Left(StatefulAutonomous):
             self.next_state("turn10")
 
     @state
-    def turn10(self,initial_call):
+    def turn10(self, initial_call):
         if self.autonomous.turn(initial_call, 180):
             self.next_state("shoot2")
 
-    @timed_state(duration=7.0, next_state="end")
-    def shoot2(self, initial_call):
-        self.autonomous.shoot(initial_call)
+    @timed_state(duration=5.0, next_state="end")
+    def shoot2(self):
+        self.autonomous.shoot()
 
     @state
     def end(self):
