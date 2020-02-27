@@ -87,7 +87,7 @@ class Robot(wpilib.TimedRobot):
         climber_0 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_0)
         climber_1 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_1)
         winch_0_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_0_0)
-        winch_0_1 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_0_1)
+        winch_0_1 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_0_1)
         winch_1_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_1_0)
         winch_1_1 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_1_1)
         self.climber = Climber(climber_0, climber_1, winch_0_0, winch_0_1,

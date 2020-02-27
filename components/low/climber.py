@@ -6,7 +6,7 @@ class Climber:
     """Climber class"""
     def __init__(self, climber_0: ctre.WPI_TalonSRX,
                  climber_1: ctre.WPI_TalonSRX, winch_0_0: ctre.WPI_TalonSRX,
-                 winch_0_1: ctre.WPI_VictorSPX, winch_1_0: ctre.WPI_TalonSRX,
+                 winch_0_1: ctre.WPI_TalonSRX, winch_1_0: ctre.WPI_TalonSRX,
                  winch_1_1: ctre.WPI_VictorSPX):
         self.climber_0 = climber_0
         self.climber_1 = climber_1
