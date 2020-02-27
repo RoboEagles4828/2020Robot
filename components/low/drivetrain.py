@@ -1,5 +1,6 @@
 """Drivetrain module"""
 import ctre
+import config
 
 
 class Drivetrain:
@@ -12,6 +13,8 @@ class Drivetrain:
         self.right_1 = right_1
         self.speed_left = 0
         self.speed_right = 0
+        self.raw_distance = 0
+        self.reset_raw_distance = False
 
     def set_speeds(self, speed_left: float, speed_right: float) -> None:
         """
@@ -49,8 +52,21 @@ class Drivetrain:
         # Set speeds
         self.set_speeds(speed_left, speed_right)
 
+    def get_raw_distance(self):
+        return self.raw_distance
+
+    def get_distance(self):
+        return self.get_raw_distance() * config.Drivetrain.ENCODER_RATIO
+
+    def reset_distance(self):
+        self.reset_raw_distance = True
+
     def execute(self):
         self.left_0.set(self.speed_left)
         self.left_1.set(self.speed_left)
         self.right_0.set(-self.speed_right)
         self.right_1.set(-self.speed_right)
+        if self.reset_raw_distance:
+            self.left_0.setSelectedSensorPosition(0)
+            self.reset_raw_distance = False
+        self.raw_distance = self.left_0.getSelectedSensorPosition()

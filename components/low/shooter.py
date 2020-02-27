@@ -31,6 +31,8 @@ class Shooter:
 
     def set_intake_speed(self, speed):
         self.intake_speed = speed
+        if speed != 0:
+            self.set_shooter(False)
 
     def set_intake_control_speed(self, speed):
         self.intake_control_speed = speed
@@ -46,6 +48,9 @@ class Shooter:
 
     def set_shooter(self, status):
         self.shooter_status = status
+
+    def get_shooter(self):
+        return self.shooter_status
 
     def execute(self):
         self.intake.set(self.intake_speed)

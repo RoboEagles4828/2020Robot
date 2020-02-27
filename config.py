@@ -4,6 +4,9 @@ class Robot:
     JOYSTICK_TWIST_MAP_A = 0.25
     JOYSTICK_DEADZONE = 0.05
     JOYSTICK_AVERAGE_PERIOD = 0
+    DRIVE_SPEED = 0.7
+    DRIVE_SLOW_SPEED = 0.3
+    DRIVE_TURN_SPEED = 0.7
     VISION_RATIO = 0.5
     INTAKE_SPEED = 0.6
     SHOOTER_SPEED_10 = 0.83
@@ -12,6 +15,29 @@ class Robot:
     CLIMBER_DOWN_SPEED = 0.15
     WINCH_UP_SPEED = 1.0
     WINCH_DOWN_SPEED = 1.0
+
+
+class Autonomous:
+    POS_1_FORWARD = 43.3
+    POS_1_TO_TRENCH = 66.9
+    POS_1_TRENCH = 156.3
+    POS_2_TRENCH_TURN = 17.9
+    POS_2_TURN = 29.1
+    POS_2_TO_TRENCH = 86.6
+    POS_2_TRENCH = 108
+    POS_3_SHOOT = 134.9
+    POS_3_TURN = 60.9
+    POS_3_TRENCH = 130.4
+    DRIVE_DISTANCE = 50.0
+    DS_8_TO_MID = 60.0
+    DS_8_TURN = 22.5
+    DS_8_FORWARD_MID = 86.3
+    DS_8_BACK_MID = 68.3
+    DS_SHOOT = 178.0
+
+
+class Drivetrain:
+    ENCODER_RATIO = 1 / 1460
 
 
 class Shooter:

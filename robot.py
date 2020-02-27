@@ -2,9 +2,12 @@
 import logging
 import wpilib
 import ctre
+from navx import AHRS
 from networktables import NetworkTables
+from robotpy_ext.autonomous.selector import AutonomousModeSelector
 
 import config
+from autonomous.autonomous import Autonomous
 from components.low.analog_input import AnalogInput
 from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
@@ -22,6 +25,8 @@ class Robot(wpilib.TimedRobot):
         self.timer = wpilib.Timer()
         # Create compressor
         wpilib.Compressor(0).setClosedLoopControl(True)
+        # Create navx
+        self.navx = AHRS.create_spi()
         # Create camera server
         wpilib.CameraServer.launch()
         # Create camera servos
@@ -88,12 +93,31 @@ class Robot(wpilib.TimedRobot):
         self.climber = Climber(climber_0, climber_1, winch_0_0, winch_0_1,
                                winch_1_0, winch_1_1)
         self.components.append(self.climber)
+        # Create autonomous helper
+        self.autonomous = Autonomous(self.drivetrain, self.navx, self.shooter)
+        # Create autonomous selector
+        self.auton_mode = AutonomousModeSelector(
+            "autonomous", {
+                "autonomous": self.autonomous,
+                "drivetrain": self.drivetrain,
+                "navx": self.navx,
+                "shooter": self.shooter
+            })
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
 
     def autonomousPeriodic(self):
+        self.auton_mode.run(iter_fn=self.autonomous_iter)
+
+    def autonomous_iter(self):
         """Autonomous mode periodic (20ms)"""
+        # Run each component's execute function
+        for component in self.components:
+            try:
+                component.execute()
+            except Exception as exception:
+                self.logger.exception(exception)
 
     def teleopInit(self):
         """Teleoperated mode initialization"""
@@ -129,7 +153,7 @@ class Robot(wpilib.TimedRobot):
             else:
                 self.shooter.set_intake_speed(0)
             if self.joystick.getRawButton(config.Buttons.Shooter.SHOOTER):
-                self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED)
+                self.shooter.set_shooter_speed(config.Robot.SHOOTER_SPEED_10)
             else:
                 self.shooter.set_shooter_speed(0)
             if self.joystick.getPOV() == 180:
