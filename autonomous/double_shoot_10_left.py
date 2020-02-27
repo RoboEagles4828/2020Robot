@@ -33,12 +33,10 @@ class DoubleShoot10Left(StatefulAutonomous):
     def turn1(self, initial_call):
         if self.autonomous.turn(initial_call, 90):
             self.next_state("drive3")
-
     @state
     def drive3(self, initial_call):
         if self.autonomous.drive(initial_call, -config.Autonomous.POS_3_SHOOT):
             self.next_state("turn2")
-
     @state
     def turn2(self, initial_call):
         if self.autonomous.turn(initial_call, -config.Autonomous.POS_3_TURN):
@@ -50,6 +48,8 @@ class DoubleShoot10Left(StatefulAutonomous):
 
     @state
     def turn3(self, initial_call):
+        self.shooter.set_conveyor_speed(0)
+        self.shooter.set_shooter_speed(0)
         if self.autonomous.turn(initial_call, config.Autonomous.POS_3_TURN):
             self.next_state("drive4")
 
@@ -57,12 +57,10 @@ class DoubleShoot10Left(StatefulAutonomous):
     def drive4(self, initial_call):
         if self.autonomous.drive(initial_call, 54.6):
             self.next_state("turn4")
-
     @state
     def turn4(self, initial_call):
         if self.autonomous.turn(initial_call, -90):
             self.next_state("drive5")
-
     @state
     def drive5(self, initial_call):
         if self.autonomous.drive(initial_call, 130.5):
@@ -79,37 +77,30 @@ class DoubleShoot10Left(StatefulAutonomous):
         self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
         if self.autonomous.drive(initial_call, 59.1, slow=True):
             self.next_state("turn6")
-
     @state
     def turn6(self, initial_call):
         if self.autonomous.turn(initial_call, 90):
             self.next_state("drive7")
-
     @state
     def drive7(self, initial_call):
         if self.autonomous.drive(initial_call, 75.4, slow=True):
             self.next_state("turn7")
-
     @state
     def turn7(self, initial_call):
         if self.autonomous.turn(initial_call, -90):
             self.next_state("drive8")
-
     @state
     def drive8(self, initial_call):
         if self.autonomous.drive(initial_call, 29.4):
             self.next_state("turn8")
-
     @state
     def turn8(self, initial_call):
         if self.autonomous.turn(initial_call, -90):
             self.next_state("drive9")
-
     @state
     def drive9(self, initial_call):
         if self.autonomous.drive(initial_call, 63.4):
             self.next_state("drive10")
-
     @state
     def drive10(self, initial_call):
         self.shooter.set_intake_speed(0)
