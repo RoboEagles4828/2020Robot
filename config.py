@@ -33,6 +33,10 @@ class Autonomous:
     DS_SHOOT = 178.0
 
 
+class Drivetrain:
+    ENCODER_RATIO = 1 / 1460
+
+
 class Shooter:
     CONVEYOR_SPEED = 1
 
@@ -80,7 +84,3 @@ class Buttons:
     class Climber:
         UP = 7
         DOWN = 8
-
-
-class DriveTrain:
-    ENCODER_RATIO = 0

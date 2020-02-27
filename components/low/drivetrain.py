@@ -56,7 +56,7 @@ class Drivetrain:
         return self.raw_distance
 
     def get_distance(self):
-        return self.get_raw_distance() * config.DriveTrain.ENCODER_RATIO
+        return self.get_raw_distance() * config.Drivetrain.ENCODER_RATIO
 
     def reset_distance(self):
         self.reset_raw_distance = True

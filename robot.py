@@ -2,6 +2,7 @@
 import logging
 import wpilib
 import ctre
+from navx import AHRS
 from networktables import NetworkTables
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 
@@ -22,10 +23,10 @@ class Robot(wpilib.TimedRobot):
         self.logger = logging.getLogger("Robot")
         # Create timer
         self.timer = wpilib.Timer()
-        # Create autonomous selector
-        self.auton_mode = AutonomousModeSelector("autonomous")
         # Create compressor
         wpilib.Compressor(0).setClosedLoopControl(True)
+        # Create navx
+        self.navx = AHRS.create_spi()
         # Create camera server
         wpilib.CameraServer.launch()
         # Create camera servos
@@ -94,6 +95,14 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.climber)
         # Create autonomous helper
         self.autonomous = Autonomous(self.drivetrain, self.navx, self.shooter)
+        # Create autonomous selector
+        self.auton_mode = AutonomousModeSelector(
+            "autonomous", {
+                "autonomous": self.autonomous,
+                "drivetrain": self.drivetrain,
+                "navx": self.navx,
+                "shooter": self.shooter
+            })
 
     def autonomousInit(self):
         """Autonomous mode initialization"""

@@ -4,7 +4,7 @@ from robotpy_ext.autonomous.stateful_autonomous import timed_state
 from navx import AHRS
 
 import config
-from autonomous import Autonomous
+from autonomous.autonomous import Autonomous
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
 
