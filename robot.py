@@ -81,10 +81,10 @@ class Robot(wpilib.TimedRobot):
         # Create climber
         climber_0 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_0)
         climber_1 = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_1)
-        winch_0_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_0_0)
+        winch_0_0 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_0_0)
         winch_0_1 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_0_1)
         winch_1_0 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_1_0)
-        winch_1_1 = ctre.WPI_VictorSPX(config.Ports.Climber.WINCH_1_1)
+        winch_1_1 = ctre.WPI_TalonSRX(config.Ports.Climber.WINCH_1_1)
         self.climber = Climber(climber_0, climber_1, winch_0_0, winch_0_1,
                                winch_1_0, winch_1_1)
         self.components.append(self.climber)
@@ -140,15 +140,30 @@ class Robot(wpilib.TimedRobot):
             self.logger.exception(exception)
         # Climber
         try:
-            if self.joystick.getRawButton(config.Buttons.Climber.UP):
-                self.climber.set_climber_speed(config.Robot.CLIMBER_SPEED)
-                self.climber.set_winch_speed(config.Robot.WINCH_SPEED)
-            elif self.joystick.getRawButton(config.Buttons.Climber.DOWN):
-                self.climber.set_climber_speed(-config.Robot.CLIMBER_SPEED)
-                self.climber.set_winch_speed(-config.Robot.WINCH_SPEED)
+            if self.joystick.getRawButton(config.Buttons.Climber.LEFT_UP):
+                self.climber.set_climber_left_speed(
+                    config.Robot.CLIMBER_UP_SPEED)
+                self.climber.set_winch_left_speed(config.Robot.WINCH_UP_SPEED)
+            elif self.joystick.getRawButton(config.Buttons.Climber.LEFT_DOWN):
+                self.climber.set_climber_left_speed(
+                    -config.Robot.CLIMBER_DOWN_SPEED)
+                self.climber.set_winch_left_speed(
+                    -config.Robot.WINCH_DOWN_SPEED)
             else:
-                self.climber.set_climber_speed(0)
-                self.climber.set_winch_speed(0)
+                self.climber.set_climber_left_speed(0)
+                self.climber.set_winch_left_speed(0)
+            if self.joystick.getRawButton(config.Buttons.Climber.RIGHT_UP):
+                self.climber.set_climber_right_speed(
+                    config.Robot.CLIMBER_UP_SPEED)
+                self.climber.set_winch_right_speed(config.Robot.WINCH_UP_SPEED)
+            elif self.joystick.getRawButton(config.Buttons.Climber.RIGHT_DOWN):
+                self.climber.set_climber_right_speed(
+                    -config.Robot.CLIMBER_DOWN_SPEED)
+                self.climber.set_winch_right_speed(
+                    -config.Robot.WINCH_DOWN_SPEED)
+            else:
+                self.climber.set_climber_right_speed(0)
+                self.climber.set_winch_right_speed(0)
         except Exception as exception:
             self.logger.exception(exception)
 

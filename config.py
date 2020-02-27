@@ -7,8 +7,10 @@ class Robot:
     VISION_RATIO = 0.5
     INTAKE_SPEED = 0.6
     SHOOTER_SPEED = 1
-    CLIMBER_SPEED = 0.25
-    WINCH_SPEED = 1
+    CLIMBER_UP_SPEED = 0.31
+    CLIMBER_DOWN_SPEED = 0.15
+    WINCH_UP_SPEED = 1.0
+    WINCH_DOWN_SPEED = 1.0
 
 
 class Shooter:
@@ -38,12 +40,12 @@ class Ports:
         SHOOTER_PISTON_1 = 7
 
     class Climber:
-        CLIMBER_0 = 13
-        CLIMBER_1 = 16
-        WINCH_0_0 = 14
-        WINCH_0_1 = 15
-        WINCH_1_0 = 17
-        WINCH_1_1 = 18
+        CLIMBER_0 = 16
+        CLIMBER_1 = 13
+        WINCH_0_0 = 18
+        WINCH_0_1 = 17
+        WINCH_1_0 = 15
+        WINCH_1_1 = 14
 
 
 class Buttons:
@@ -58,3 +60,7 @@ class Buttons:
     class Climber:
         UP = 7
         DOWN = 8
+        LEFT_UP = 5
+        LEFT_DOWN = 3
+        RIGHT_UP = 6
+        RIGHT_DOWN = 4
