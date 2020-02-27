@@ -51,7 +51,7 @@ class Shooter:
 
     def get_shooter(self):
         return self.shooter_status
-    
+
     def execute(self):
         self.intake.set(self.intake_speed)
         self.intake_control.set(self.intake_control_speed)

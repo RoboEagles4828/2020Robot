@@ -27,6 +27,7 @@ class Shoot5(StatefulAutonomous):
     @state
     def drive2(self, initial_call):
         self.shooter.set_intake_speed(0)
+        self.shooter.set_shooter(True)
         if self.autonomous.drive(initial_call,
                                  -config.Autonomous.POS_3_TRENCH):
             self.next_state("turn1")

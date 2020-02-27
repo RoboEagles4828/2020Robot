@@ -49,6 +49,7 @@ class DoubleShoot8Right(StatefulAutonomous):
     @state
     def turn3(self, initial_call):
         self.shooter.set_intake_speed(0)
+        self.shooter.set_shooter(True)
         if self.autonomous.turn(initial_call, 90):
             self.next_state("drive3")
 
@@ -73,6 +74,7 @@ class DoubleShoot8Right(StatefulAutonomous):
     @state
     def drive5(self, initial_call):
         self.shooter.set_intake_speed(0)
+        self.shooter.set_shooter(True)
         if self.autonomous.drive(initial_call,
                                  -config.Autonomous.DS_8_BACK_MID,
                                  slow=True):

@@ -49,6 +49,7 @@ class DoubleShoot6Right(StatefulAutonomous):
     @state
     def drive3(self, initial_call):
         self.shooter.set_intake_speed(0)
+        self.shooter.set_shooter(True)
         if self.autonomous.drive(initial_call,
                                  -config.Autonomous.POS_2_TRENCH):
             self.next_state("turn3")
