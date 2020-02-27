@@ -6,7 +6,8 @@ class Robot:
     JOYSTICK_AVERAGE_PERIOD = 0
     VISION_RATIO = 0.5
     INTAKE_SPEED = 0.6
-    SHOOTER_SPEED = 1
+    SHOOTER_SPEED_10 = 0.83
+    SHOOTER_SPEED_20 = 0.95
     CLIMBER_UP_SPEED = 0.31
     CLIMBER_DOWN_SPEED = 0.15
     WINCH_UP_SPEED = 1.0
@@ -14,7 +15,7 @@ class Robot:
 
 
 class Shooter:
-    CONVEYOR_SPEED = 1
+    CONVEYOR_SPEED = 0.85
 
 
 class Ports:
