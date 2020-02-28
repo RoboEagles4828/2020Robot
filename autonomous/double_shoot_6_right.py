@@ -32,7 +32,7 @@ class DoubleShoot6Right(StatefulAutonomous):
 
     @timed_state(duration=3.0, next_state="turn2")
     def shoot1(self):
-        self.autonomous.shoot()
+        self.autonomous.shoot_1()
 
     @state
     def turn2(self, initial_call):
@@ -62,7 +62,7 @@ class DoubleShoot6Right(StatefulAutonomous):
 
     @timed_state(duration=5.0, next_state="end")
     def shoot2(self):
-        self.autonomous.shoot()
+        self.autonomous.shoot_1()
 
     @state
     def end(self):
