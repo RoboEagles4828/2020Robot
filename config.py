@@ -1,20 +1,39 @@
 class Robot:
-    JOYSTICK_X_MAP_A = 0.5
+    JOYSTICK_X_MAP_A = 0.75
     JOYSTICK_Y_MAP_A = 0.5
-    JOYSTICK_TWIST_MAP_A = 0.25
+    JOYSTICK_TWIST_MAP_A = 0.5
     JOYSTICK_DEADZONE = 0.05
     JOYSTICK_AVERAGE_PERIOD = 0
-    DRIVE_SPEED = 0.7
-    DRIVE_SLOW_SPEED = 0.3
-    DRIVE_TURN_SPEED = 0.7
-    VISION_RATIO = 0.5
-    INTAKE_SPEED = 0.6
-    SHOOTER_SPEED_10 = 0.83
-    SHOOTER_SPEED_20 = 0.95
-    CLIMBER_UP_SPEED = 0.31
-    CLIMBER_DOWN_SPEED = 0.15
-    WINCH_UP_SPEED = 1.0
-    WINCH_DOWN_SPEED = 1.0
+    CAMERA_YAW_POS_0 = 0
+    CAMERA_YAW_POS_1 = 1
+
+    class Drivetrain:
+        DRIVE_SPEED = 0.4
+        DRIVE_SLOW_SPEED = 0.1
+        DRIVE_TURN_SPEED = 0.3
+        VISION_RATIO = 0.5
+
+    class Shooter:
+        INTAKE_SPEED = 0.6
+        OUTTAKE_SPEED = 0.6
+        INTAKE_CONTROL_SPEED = 0.6
+        CONVEYOR_SPEED = 0.5
+        SHOOTER_SPEED_0 = 0.83
+        SHOOTER_SPEED_1 = 0.95
+
+    class Climber:
+        CLIMBER_LEFT_UP_SPEED = 0.75
+        CLIMBER_RIGHT_UP_SPEED = 0.75
+        WINCH_LEFT_FRONT_UP_SPEED = 1.0
+        WINCH_LEFT_BACK_UP_SPEED = 1.0
+        WINCH_RIGHT_FRONT_UP_SPEED = 1.0
+        WINCH_RIGHT_BACK_UP_SPEED = 1.0
+        CLIMBER_LEFT_DOWN_SPEED = 0.70
+        CLIMBER_RIGHT_DOWN_SPEED = 0.70
+        WINCH_LEFT_FRONT_DOWN_SPEED = 1.0
+        WINCH_LEFT_BACK_DOWN_SPEED = 1.0
+        WINCH_RIGHT_FRONT_DOWN_SPEED = 1.0
+        WINCH_RIGHT_BACK_DOWN_SPEED = 1.0
 
 
 class Autonomous:
@@ -67,27 +86,38 @@ class Ports:
         SHOOTER_PISTON_1 = 7
 
     class Climber:
-        CLIMBER_0 = 16
-        CLIMBER_1 = 13
-        WINCH_0_0 = 18
-        WINCH_0_1 = 17
-        WINCH_1_0 = 15
-        WINCH_1_1 = 14
+        CLIMBER_LEFT = 16
+        CLIMBER_RIGHT = 13
+        WINCH_LEFT_FRONT = 18
+        WINCH_LEFT_BACK = 17
+        WINCH_RIGHT_FRONT = 14
+        WINCH_RIGHT_BACK = 15
 
 
 class Buttons:
-    class Drivetrain:
-        VISION = 9
+    class Joystick0:
+        CAMERA = 11
 
-    class Shooter:
-        INTAKE = 2
-        OUTTAKE = 12
-        SHOOTER = 1
+        class Drivetrain:
+            VISION = 1
 
-    class Climber:
-        UP = 7
-        DOWN = 8
-        LEFT_UP = 5
-        LEFT_DOWN = 3
-        RIGHT_UP = 6
-        RIGHT_DOWN = 4
+        class Shooter:
+            INTAKE_STATUS = 12
+            CONVEYOR = 7
+
+    class Joystick1:
+        class Climber:
+            WINCH_LEFT_FRONT = 9
+            WINCH_LEFT_BACK = 11
+            WINCH_RIGHT_FRONT = 10
+            WINCH_RIGHT_BACK = 12
+            LEFT_UP = 5
+            LEFT_DOWN = 3
+            RIGHT_UP = 6
+            RIGHT_DOWN = 4
+
+        class Shooter:
+            INTAKE = 1
+            OUTTAKE = 2
+            SHOOT_0 = 7
+            SHOOT_1 = 8

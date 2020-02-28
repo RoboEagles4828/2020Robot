@@ -20,7 +20,7 @@ class ShootForward(StatefulAutonomous):
 
     @timed_state(duration=3.0, next_state="drive1", first=True)
     def shoot1(self):
-        self.autonomous.shoot()
+        self.autonomous.shoot_0()
 
     @state
     def drive1(self, initial_call):

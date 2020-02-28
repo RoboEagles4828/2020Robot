@@ -32,10 +32,16 @@ class Shooter:
     def set_intake_speed(self, speed):
         self.intake_speed = speed
         if speed != 0:
-            self.set_shooter(False)
+            self.set_shooter(True)
+
+    def get_intake_speed(self):
+        return self.intake_speed
 
     def set_intake_control_speed(self, speed):
         self.intake_control_speed = speed
+
+    def get_intake_control_speed(self):
+        return self.intake_control_speed
 
     def get_conveyor_prox_front(self):
         return self.conveyor_prox_front_status

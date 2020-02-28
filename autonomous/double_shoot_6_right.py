@@ -42,14 +42,14 @@ class DoubleShoot6Right(StatefulAutonomous):
 
     @state
     def drive2(self, initial_call):
-        self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
+        self.shooter.set_intake_speed(config.Robot.Shooter.INTAKE_SPEED)
         if self.autonomous.drive(initial_call, config.Autonomous.POS_2_TRENCH):
             self.next_state("drive3")
 
     @state
     def drive3(self, initial_call):
         self.shooter.set_intake_speed(0)
-        self.shooter.set_shooter(True)
+        self.shooter.set_shooter(False)
         if self.autonomous.drive(initial_call,
                                  -config.Autonomous.POS_2_TRENCH):
             self.next_state("turn3")
@@ -66,6 +66,5 @@ class DoubleShoot6Right(StatefulAutonomous):
 
     @state
     def end(self):
-        self.shooter.set_conveyor_speed(0)
         self.shooter.set_shooter_speed(0)
         self.done()

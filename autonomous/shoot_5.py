@@ -20,14 +20,14 @@ class Shoot5(StatefulAutonomous):
 
     @state(first=True)
     def drive1(self, initial_call):
-        self.shooter.set_intake_speed(config.Robot.INTAKE_SPEED)
+        self.shooter.set_intake_speed(config.Robot.Shooter.INTAKE_SPEED)
         if self.autonomous.drive(initial_call, config.Autonomous.POS_3_TRENCH):
             self.next_state("drive2")
 
     @state
     def drive2(self, initial_call):
         self.shooter.set_intake_speed(0)
-        self.shooter.set_shooter(True)
+        self.shooter.set_shooter(False)
         if self.autonomous.drive(initial_call,
                                  -config.Autonomous.POS_3_TRENCH):
             self.next_state("turn1")
