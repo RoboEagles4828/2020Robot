@@ -17,7 +17,7 @@ class Robot:
         INTAKE_SPEED = 0.6
         OUTTAKE_SPEED = 0.6
         INTAKE_CONTROL_SPEED = 0.6
-        CONVEYOR_SPEED = 0.6
+        CONVEYOR_SPEED = 0.5
         SHOOTER_SPEED_0 = 0.80
         SHOOTER_SPEED_1 = 0.95
 
@@ -60,8 +60,8 @@ class Drivetrain:
 
 
 class Shooter:
-    CONVEYOR_INTAKE_SPEED = 0.60
-    CONVEYOR_SHOOT_SPEED = 1.00
+    CONVEYOR_INTAKE_SPEED = 0.50
+    CONVEYOR_SHOOT_SPEED = 0.85
 
 
 class Ports:
