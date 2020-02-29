@@ -63,9 +63,10 @@ class Shooter:
         self.intake_control.set(self.intake_control_speed)
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = not self.conveyor_prox_back.get()
-        if self.shooter_speed != 0 or (self.get_conveyor_prox_front()
-                                       and not self.get_conveyor_prox_back()):
-            self.conveyor.set(config.Shooter.CONVEYOR_SPEED)
+        if self.shooter_speed != 0:
+            self.conveyor.set(config.Shooter.CONVEYOR_SHOOT_SPEED)
+        elif self.get_conveyor_prox_front() and not self.get_conveyor_prox_back():
+            self.conveyor.set(config.Shooter.CONVEYOR_INTAKE_SPEED)
         else:
             self.conveyor.set(0)
         self.shooter_left.set(self.shooter_speed)

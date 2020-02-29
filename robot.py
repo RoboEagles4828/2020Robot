@@ -31,7 +31,6 @@ class Robot(wpilib.TimedRobot):
         wpilib.CameraServer.launch()
         # Create camera servos
         self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
-        self.camera_servo_pitch = wpilib.Servo(config.Ports.CAMERA_SERVO_PITCH)
         # Get pi network table
         self.nt_pi = NetworkTables.getTable("pi")
         # Create buttons status
@@ -179,6 +178,8 @@ class Robot(wpilib.TimedRobot):
                     config.Buttons.Joystick0.Drivetrain.VISION):
                 value = self.nt_pi.getNumber(
                     "value", 0) * config.Robot.Drivetrain.VISION_RATIO
+                if abs(value) < 0.05:
+                    value = value / abs(value) * 0.05
                 self.drivetrain.set_speeds(value, -value)
             else:
                 self.drivetrain.set_speeds_joystick(
