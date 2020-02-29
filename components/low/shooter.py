@@ -28,6 +28,7 @@ class Shooter:
         self.conveyor_prox_back_status = False
         self.shooter_speed = 0
         self.shooter_status = False
+        self.timer = wpilib.Timer()
 
     def set_intake_speed(self, speed):
         self.intake_speed = speed
@@ -64,10 +65,15 @@ class Shooter:
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = not self.conveyor_prox_back.get()
         if self.shooter_speed != 0:
-            self.conveyor.set(config.Shooter.CONVEYOR_SHOOT_SPEED)
-        elif self.get_conveyor_prox_front() and not self.get_conveyor_prox_back():
+            if self.timer.hasPeriodPassed(0.5):
+                self.conveyor.set(config.Shooter.CONVEYOR_SHOOT_SPEED)
+            self.timer.start()
+        elif self.get_conveyor_prox_front(
+        ) and not self.get_conveyor_prox_back():
+            self.timer.stop()
             self.conveyor.set(config.Shooter.CONVEYOR_INTAKE_SPEED)
         else:
+            self.timer.stop()
             self.conveyor.set(0)
         self.shooter_left.set(self.shooter_speed)
         self.shooter_right.set(-self.shooter_speed)
