@@ -128,14 +128,18 @@ class Robot(wpilib.TimedRobot):
                 "autonomous": self.autonomous,
                 "drivetrain": self.drivetrain,
                 "navx": self.navx,
-                "shooter": self.shooter
+                "shooter": self.shooter,
+                "nt_pi": self.nt_pi
             })
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
 
     def autonomousPeriodic(self):
-        self.auton_mode.run(iter_fn=self.autonomous_iter)
+        try:
+            self.auton_mode.run(iter_fn=self.autonomous_iter)
+        except Exception as exception:
+            self.logger.exception(exception)
 
     def autonomous_iter(self):
         """Autonomous mode periodic (20ms)"""
