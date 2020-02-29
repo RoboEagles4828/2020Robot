@@ -28,7 +28,7 @@ class ShootForwardVision(StatefulAutonomous):
             value = value / abs(value) * 0.05
         self.drivetrain.set_speeds(value, -value)
 
-    @timed_state(duration=3.0, next_state="drive1", first=True)
+    @timed_state(duration=3.0, next_state="drive1")
     def shoot1(self):
         self.autonomous.shoot_0()
 
