@@ -49,7 +49,8 @@ class Shooter:
         self.conveyor_status = status
 
     def get_conveyor_prox_front(self):
-        return self.conveyor_prox_front_status
+        # return self.conveyor_prox_front_status
+        return False
 
     def get_conveyor_prox_back(self):
         return self.conveyor_prox_back_status
