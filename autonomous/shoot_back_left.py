@@ -35,7 +35,7 @@ class ShootBackLeft(StatefulAutonomous):
 
     @timed_state(duration=3.0, next_state="turn3")
     def shoot1(self):
-        self.autonomous.shoot()
+        self.autonomous.shoot_0()
 
     @state
     def turn3(self, initial_call):
