@@ -214,6 +214,10 @@ class Robot(wpilib.TimedRobot):
                     config.Robot.Shooter.INTAKE_CONTROL_SPEED *
                     (1 if self.shooter.get_intake_control_speed() < 0 else -1))
             self.button_intake_status = button
+            # Conveyor
+            self.shooter.set_conveyor(
+                self.joystick_0.getRawButton(
+                    config.Buttons.Joystick0.Shooter.CONVEYOR))
             # Shooter (Joystick 1)
             if self.joystick_1.getRawButton(
                     config.Buttons.Joystick1.Shooter.SHOOT_0):
