@@ -24,6 +24,7 @@ class Shooter:
         self.shooter_piston_1 = shooter_piston_1
         self.intake_speed = 0
         self.intake_control_speed = 0
+        self.conveyor_status = False
         self.conveyor_prox_front_status = False
         self.conveyor_prox_back_status = False
         self.shooter_speed = 0
@@ -43,6 +44,9 @@ class Shooter:
 
     def get_intake_control_speed(self):
         return self.intake_control_speed
+
+    def set_conveyor(self, status):
+        self.conveyor_status = status
 
     def get_conveyor_prox_front(self):
         return self.conveyor_prox_front_status
@@ -68,8 +72,8 @@ class Shooter:
             if self.timer.hasElapsed(0.5):
                 self.conveyor.set(config.Shooter.CONVEYOR_SHOOT_SPEED)
             self.timer.start()
-        elif self.get_conveyor_prox_front(
-        ) and not self.get_conveyor_prox_back():
+        elif (self.get_conveyor_prox_front()
+              and not self.get_conveyor_prox_back()) or self.conveyor_status:
             self.timer.stop()
             self.timer.reset()
             self.conveyor.set(config.Shooter.CONVEYOR_INTAKE_SPEED)
