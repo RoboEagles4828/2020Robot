@@ -65,15 +65,17 @@ class Shooter:
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = not self.conveyor_prox_back.get()
         if self.shooter_speed != 0:
-            if self.timer.hasPeriodPassed(0.5):
+            if self.timer.hasElapsed(0.5):
                 self.conveyor.set(config.Shooter.CONVEYOR_SHOOT_SPEED)
             self.timer.start()
         elif self.get_conveyor_prox_front(
         ) and not self.get_conveyor_prox_back():
             self.timer.stop()
+            self.timer.reset()
             self.conveyor.set(config.Shooter.CONVEYOR_INTAKE_SPEED)
         else:
             self.timer.stop()
+            self.timer.reset()
             self.conveyor.set(0)
         self.shooter_left.set(self.shooter_speed)
         self.shooter_right.set(-self.shooter_speed)
