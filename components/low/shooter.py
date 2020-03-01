@@ -49,8 +49,7 @@ class Shooter:
         self.conveyor_status = status
 
     def get_conveyor_prox_front(self):
-        # return self.conveyor_prox_front_status
-        return False
+        return self.conveyor_prox_front_status
 
     def get_conveyor_prox_back(self):
         return self.conveyor_prox_back_status
@@ -70,7 +69,7 @@ class Shooter:
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = not self.conveyor_prox_back.get()
         if self.shooter_speed != 0:
-            if self.timer.hasElapsed(0.5):
+            if self.timer.hasElapsed(1.0):
                 self.conveyor.set(config.Shooter.CONVEYOR_SHOOT_SPEED)
             self.timer.start()
         elif (self.get_conveyor_prox_front()

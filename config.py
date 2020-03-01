@@ -14,11 +14,11 @@ class Robot:
         VISION_RATIO = 0.5
 
     class Shooter:
-        INTAKE_SPEED = 0.6
-        OUTTAKE_SPEED = 0.6
+        INTAKE_SPEED = 0.9
+        OUTTAKE_SPEED = 0.9
         INTAKE_CONTROL_SPEED = 0.6
         CONVEYOR_SPEED = 0.5
-        SHOOTER_SPEED_0 = 0.78
+        SHOOTER_SPEED_0 = 0.75
         SHOOTER_SPEED_1 = 0.95
 
     class Climber:
