@@ -14,11 +14,11 @@ class Robot:
         VISION_RATIO = 0.5
 
     class Shooter:
-        INTAKE_SPEED = 0.9
-        OUTTAKE_SPEED = 0.9
+        INTAKE_SPEED = 0.5
+        OUTTAKE_SPEED = 0.5
         INTAKE_CONTROL_SPEED = 0.6
         CONVEYOR_SPEED = 0.5
-        SHOOTER_SPEED_0 = 0.75
+        SHOOTER_SPEED_0 = 0.77
         SHOOTER_SPEED_1 = 0.95
 
     class Climber:
@@ -76,7 +76,6 @@ class Ports:
 
     class Shooter:
         INTAKE = 5
-        INTAKE_CONTROL = 6
         CONVEYOR = 7
         CONVEYOR_PROX_FRONT = 8
         CONVEYOR_PROX_BACK = 9
@@ -102,7 +101,6 @@ class Buttons:
             VISION = 1
 
         class Shooter:
-            INTAKE_STATUS = 12
             CONVEYOR = 7
 
     class Joystick1:

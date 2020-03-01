@@ -36,7 +36,6 @@ class Robot(wpilib.TimedRobot):
         # Create buttons status
         self.button_camera = False
         self.button_intake = False
-        self.button_intake_status = False
         # Create components list
         self.components = list()
         # Create joysticks
@@ -87,8 +86,6 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.drivetrain)
         # Create shooter
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
-        intake_control = ctre.WPI_VictorSPX(
-            config.Ports.Shooter.INTAKE_CONTROL)
         conveyor = ctre.WPI_VictorSPX(config.Ports.Shooter.CONVEYOR)
         conveyor_prox_front = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_FRONT)
@@ -100,7 +97,7 @@ class Robot(wpilib.TimedRobot):
             config.Ports.Shooter.SHOOTER_PISTON_0)
         shooter_piston_1 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_1)
-        self.shooter = Shooter(intake, intake_control, conveyor,
+        self.shooter = Shooter(intake, conveyor,
                                conveyor_prox_front, conveyor_prox_back,
                                shooter_left, shooter_right, shooter_piston_0,
                                shooter_piston_1)
@@ -154,7 +151,6 @@ class Robot(wpilib.TimedRobot):
         """Teleoperated mode initialization"""
         self.timer.reset()
         self.timer.start()
-        self.shooter.set_intake_control_speed(0)
 
     def teleopPeriodic(self):
         """Teleoperated mode periodic (20ms)"""
@@ -206,14 +202,6 @@ class Robot(wpilib.TimedRobot):
                     -config.Robot.Shooter.OUTTAKE_SPEED)
             elif self.shooter.get_intake_speed() < 0:
                 self.shooter.set_intake_speed(0)
-            # Intake status (Joystick 0)
-            button = self.joystick_0.getRawButton(
-                config.Buttons.Joystick0.Shooter.INTAKE_STATUS)
-            if button and not self.button_intake_status:
-                self.shooter.set_intake_control_speed(
-                    config.Robot.Shooter.INTAKE_CONTROL_SPEED *
-                    (1 if self.shooter.get_intake_control_speed() < 0 else -1))
-            self.button_intake_status = button
             # Conveyor
             self.shooter.set_conveyor(
                 self.joystick_0.getRawButton(
