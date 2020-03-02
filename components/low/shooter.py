@@ -7,12 +7,13 @@ import config
 
 class Shooter:
     """Shooter class"""
-    def __init__(
-        self, intake: ctre.WPI_TalonSRX,
-        conveyor: ctre.WPI_VictorSPX, conveyor_prox_front: wpilib.DigitalInput,
-        conveyor_prox_back: wpilib.DigitalInput,
-        shooter_left: ctre.WPI_TalonSRX, shooter_right: ctre.WPI_TalonSRX,
-        shooter_piston_0: wpilib.Solenoid, shooter_piston_1: wpilib.Solenoid):
+    def __init__(self, intake: ctre.WPI_TalonSRX, conveyor: ctre.WPI_VictorSPX,
+                 conveyor_prox_front: wpilib.DigitalInput,
+                 conveyor_prox_back: wpilib.DigitalInput,
+                 shooter_left: ctre.WPI_TalonSRX,
+                 shooter_right: ctre.WPI_TalonSRX,
+                 shooter_piston_0: wpilib.Solenoid,
+                 shooter_piston_1: wpilib.Solenoid):
         self.intake = intake
         self.conveyor = conveyor
         self.conveyor_prox_front = conveyor_prox_front
