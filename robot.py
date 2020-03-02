@@ -31,13 +31,11 @@ class Robot(wpilib.TimedRobot):
         wpilib.CameraServer.launch()
         # Create camera servos
         self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
-        self.camera_servo_pitch = wpilib.Servo(config.Ports.CAMERA_SERVO_PITCH)
         # Get pi network table
         self.nt_pi = NetworkTables.getTable("pi")
         # Create buttons status
         self.button_camera = False
         self.button_intake = False
-        self.button_intake_status = False
         # Create components list
         self.components = list()
         # Create joysticks
@@ -88,8 +86,6 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.drivetrain)
         # Create shooter
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
-        intake_control = ctre.WPI_VictorSPX(
-            config.Ports.Shooter.INTAKE_CONTROL)
         conveyor = ctre.WPI_VictorSPX(config.Ports.Shooter.CONVEYOR)
         conveyor_prox_front = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_FRONT)
@@ -101,10 +97,9 @@ class Robot(wpilib.TimedRobot):
             config.Ports.Shooter.SHOOTER_PISTON_0)
         shooter_piston_1 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_1)
-        self.shooter = Shooter(intake, intake_control, conveyor,
-                               conveyor_prox_front, conveyor_prox_back,
-                               shooter_left, shooter_right, shooter_piston_0,
-                               shooter_piston_1)
+        self.shooter = Shooter(intake, conveyor, conveyor_prox_front,
+                               conveyor_prox_back, shooter_left, shooter_right,
+                               shooter_piston_0, shooter_piston_1)
         self.components.append(self.shooter)
         # Create climber
         climber_left = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_LEFT)
@@ -129,14 +124,18 @@ class Robot(wpilib.TimedRobot):
                 "autonomous": self.autonomous,
                 "drivetrain": self.drivetrain,
                 "navx": self.navx,
-                "shooter": self.shooter
+                "shooter": self.shooter,
+                "nt_pi": self.nt_pi
             })
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
 
     def autonomousPeriodic(self):
-        self.auton_mode.run(iter_fn=self.autonomous_iter)
+        try:
+            self.auton_mode.run(iter_fn=self.autonomous_iter)
+        except Exception as exception:
+            self.logger.exception(exception)
 
     def autonomous_iter(self):
         """Autonomous mode periodic (20ms)"""
@@ -151,7 +150,6 @@ class Robot(wpilib.TimedRobot):
         """Teleoperated mode initialization"""
         self.timer.reset()
         self.timer.start()
-        self.shooter.set_intake_control_speed(0)
 
     def teleopPeriodic(self):
         """Teleoperated mode periodic (20ms)"""
@@ -179,6 +177,8 @@ class Robot(wpilib.TimedRobot):
                     config.Buttons.Joystick0.Drivetrain.VISION):
                 value = self.nt_pi.getNumber(
                     "value", 0) * config.Robot.Drivetrain.VISION_RATIO
+                if abs(value) < 0.05:
+                    value = value / abs(value) * 0.05
                 self.drivetrain.set_speeds(value, -value)
             else:
                 self.drivetrain.set_speeds_joystick(
@@ -201,14 +201,10 @@ class Robot(wpilib.TimedRobot):
                     -config.Robot.Shooter.OUTTAKE_SPEED)
             elif self.shooter.get_intake_speed() < 0:
                 self.shooter.set_intake_speed(0)
-            # Intake status (Joystick 0)
-            button = self.joystick_0.getRawButton(
-                config.Buttons.Joystick0.Shooter.INTAKE_STATUS)
-            if button and not self.button_intake_status:
-                self.shooter.set_intake_control_speed(
-                    config.Robot.Shooter.INTAKE_CONTROL_SPEED *
-                    (1 if self.shooter.get_intake_control_speed() < 0 else -1))
-            self.button_intake_status = button
+            # Conveyor
+            self.shooter.set_conveyor(
+                self.joystick_0.getRawButton(
+                    config.Buttons.Joystick0.Shooter.CONVEYOR))
             # Shooter (Joystick 1)
             if self.joystick_1.getRawButton(
                     config.Buttons.Joystick1.Shooter.SHOOT_0):

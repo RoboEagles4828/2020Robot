@@ -1,11 +1,11 @@
 class Robot:
     JOYSTICK_X_MAP_A = 0.75
-    JOYSTICK_Y_MAP_A = 0.5
+    JOYSTICK_Y_MAP_A = 0.75
     JOYSTICK_TWIST_MAP_A = 0.5
     JOYSTICK_DEADZONE = 0.05
     JOYSTICK_AVERAGE_PERIOD = 0
-    CAMERA_YAW_POS_0 = 0
-    CAMERA_YAW_POS_1 = 1
+    CAMERA_YAW_POS_0 = 0.19
+    CAMERA_YAW_POS_1 = 0.90
 
     class Drivetrain:
         DRIVE_SPEED = 0.4
@@ -14,22 +14,22 @@ class Robot:
         VISION_RATIO = 0.5
 
     class Shooter:
-        INTAKE_SPEED = 0.6
-        OUTTAKE_SPEED = 0.6
+        INTAKE_SPEED = 0.5
+        OUTTAKE_SPEED = 0.5
         INTAKE_CONTROL_SPEED = 0.6
         CONVEYOR_SPEED = 0.5
-        SHOOTER_SPEED_0 = 0.83
+        SHOOTER_SPEED_0 = 0.77
         SHOOTER_SPEED_1 = 0.95
 
     class Climber:
-        CLIMBER_LEFT_UP_SPEED = 0.75
-        CLIMBER_RIGHT_UP_SPEED = 0.75
+        CLIMBER_LEFT_UP_SPEED = 0.60
+        CLIMBER_RIGHT_UP_SPEED = 0.45
         WINCH_LEFT_FRONT_UP_SPEED = 1.0
         WINCH_LEFT_BACK_UP_SPEED = 1.0
         WINCH_RIGHT_FRONT_UP_SPEED = 1.0
         WINCH_RIGHT_BACK_UP_SPEED = 1.0
-        CLIMBER_LEFT_DOWN_SPEED = 0.70
-        CLIMBER_RIGHT_DOWN_SPEED = 0.70
+        CLIMBER_LEFT_DOWN_SPEED = 0.60
+        CLIMBER_RIGHT_DOWN_SPEED = 0.60
         WINCH_LEFT_FRONT_DOWN_SPEED = 1.0
         WINCH_LEFT_BACK_DOWN_SPEED = 1.0
         WINCH_RIGHT_FRONT_DOWN_SPEED = 1.0
@@ -60,13 +60,13 @@ class Drivetrain:
 
 
 class Shooter:
-    CONVEYOR_SPEED = 0.85
+    CONVEYOR_INTAKE_SPEED = 0.85
+    CONVEYOR_SHOOT_SPEED = 0.85
 
 
 class Ports:
 
     CAMERA_SERVO_YAW = 1
-    CAMERA_SERVO_PITCH = 0
 
     class Drivetrain:
         LEFT_0 = 1
@@ -76,7 +76,6 @@ class Ports:
 
     class Shooter:
         INTAKE = 5
-        INTAKE_CONTROL = 6
         CONVEYOR = 7
         CONVEYOR_PROX_FRONT = 8
         CONVEYOR_PROX_BACK = 9
@@ -102,7 +101,6 @@ class Buttons:
             VISION = 1
 
         class Shooter:
-            INTAKE_STATUS = 12
             CONVEYOR = 7
 
     class Joystick1:
