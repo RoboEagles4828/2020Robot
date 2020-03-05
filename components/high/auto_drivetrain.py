@@ -4,7 +4,7 @@ from navx import AHRS
 
 import config
 from components.low.drivetrain import Drivetrain
-from pathfinder.paths_manager import PathsManager
+from paths.paths_manager import PathsManager
 
 
 class AutoDrivetrain:
@@ -19,8 +19,9 @@ class AutoDrivetrain:
         self.enabled = False
 
     def set(self, pos):
+        self.pos = pos
         # Get trajectory
-        self.trajectory = self.path[pos]
+        self.trajectory = self.path[self.pos]
         # Get encoder followers
         self.left = EncoderFollower(self.trajectory.getLeftTrajectory())
         self.right = EncoderFollower(self.trajectory.getRightTrajectory())

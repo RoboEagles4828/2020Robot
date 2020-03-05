@@ -2,7 +2,7 @@ import os.path
 import pickle
 import pathfinder as pf
 
-import paths
+from paths import paths
 
 
 class PathsManager:
