@@ -36,34 +36,6 @@ class Robot:
         WINCH_RIGHT_BACK_DOWN_SPEED = 1.0
 
 
-class Autonomous:
-    POS_1_FORWARD = 43.3
-    POS_1_TO_TRENCH = 66.9
-    POS_1_TRENCH = 156.3
-    POS_2_TRENCH_TURN = 17.9
-    POS_2_TURN = 29.1
-    POS_2_TO_TRENCH = 86.6
-    POS_2_TRENCH = 108
-    POS_3_SHOOT = 134.9
-    POS_3_TURN = 60.9
-    POS_3_TRENCH = 130.4
-    DRIVE_DISTANCE = 50.0
-    DS_8_TO_MID = 60.0
-    DS_8_TURN = 22.5
-    DS_8_FORWARD_MID = 86.3
-    DS_8_BACK_MID = 68.3
-    DS_SHOOT = 178.0
-
-
-class Drivetrain:
-    ENCODER_RATIO = 1 / 1460
-
-
-class Shooter:
-    CONVEYOR_INTAKE_SPEED = 0.85
-    CONVEYOR_SHOOT_SPEED = 0.85
-
-
 class Ports:
 
     CAMERA_SERVO_YAW = 1
@@ -119,3 +91,44 @@ class Buttons:
             OUTTAKE = 2
             SHOOT_0 = 7
             SHOOT_1 = 8
+
+
+class Autonomous:
+    POS_1_FORWARD = 43.3
+    POS_1_TO_TRENCH = 66.9
+    POS_1_TRENCH = 156.3
+    POS_2_TRENCH_TURN = 17.9
+    POS_2_TURN = 29.1
+    POS_2_TO_TRENCH = 86.6
+    POS_2_TRENCH = 108
+    POS_3_SHOOT = 134.9
+    POS_3_TURN = 60.9
+    POS_3_TRENCH = 130.4
+    DRIVE_DISTANCE = 50.0
+    DS_8_TO_MID = 60.0
+    DS_8_TURN = 22.5
+    DS_8_FORWARD_MID = 86.3
+    DS_8_BACK_MID = 68.3
+    DS_SHOOT = 178.0
+
+
+class Drivetrain:
+    ENCODER_RATIO_LEFT = 1 / 1460
+    ENCODER_RATIO_RIGHT = 1 / 1460
+
+
+class Shooter:
+    CONVEYOR_INTAKE_SPEED = 0.85
+    CONVEYOR_SHOOT_SPEED = 0.85
+
+
+class AutoDrivetrain:
+    P_LEFT = 1.0
+    I_LEFT = 0.0
+    D_LEFT = 0.0
+    MAX_VELOCITY_LEFT = 0.5
+    P_RIGHT = 1.0
+    I_RIGHT = 0.0
+    D_RIGHT = 0.0
+    MAX_VELOCITY_RIGHT = 0.5
+    P_NAVX = 0.5
