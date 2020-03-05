@@ -29,6 +29,12 @@ class Shooter:
         self.shooter_speed = 0
         self.shooter_status = False
         self.timer = wpilib.Timer()
+        self.shooter_left_controller = wpilib.controller.PIDController(
+            config.Shooter.P_LEFT, config.Shooter.I_LEFT,
+            config.Shooter.D_LEFT)
+        self.shooter_right_controller = wpilib.controller.PIDController(
+            config.Shooter.P_RIGHT, config.Shooter.I_RIGHT,
+            config.Shooter.D_RIGHT)
 
     def set_intake_speed(self, speed):
         self.intake_speed = speed
