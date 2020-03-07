@@ -88,8 +88,10 @@ class Robot(wpilib.TimedRobot):
         # Create shooter
         intake = ctre.WPI_TalonSRX(config.Ports.Shooter.INTAKE)
         conveyor = ctre.WPI_VictorSPX(config.Ports.Shooter.CONVEYOR)
-        conveyor_prox_front = wpilib.DigitalInput(
-            config.Ports.Shooter.CONVEYOR_PROX_FRONT)
+        conveyor_prox_front_0 = wpilib.DigitalInput(
+            config.Ports.Shooter.CONVEYOR_PROX_FRONT_0)
+        conveyor_prox_front_1 = wpilib.DigitalInput(
+            config.Ports.Shooter.CONVEYOR_PROX_FRONT_1)
         conveyor_prox_back = wpilib.DigitalInput(
             config.Ports.Shooter.CONVEYOR_PROX_BACK)
         shooter_left = ctre.WPI_TalonSRX(config.Ports.Shooter.SHOOTER_LEFT)
@@ -98,9 +100,10 @@ class Robot(wpilib.TimedRobot):
             config.Ports.Shooter.SHOOTER_PISTON_0)
         shooter_piston_1 = wpilib.Solenoid(
             config.Ports.Shooter.SHOOTER_PISTON_1)
-        self.shooter = Shooter(intake, conveyor, conveyor_prox_front,
-                               conveyor_prox_back, shooter_left, shooter_right,
-                               shooter_piston_0, shooter_piston_1)
+        self.shooter = Shooter(intake, conveyor, conveyor_prox_front_0,
+                               conveyor_prox_front_1, conveyor_prox_back,
+                               shooter_left, shooter_right, shooter_piston_0,
+                               shooter_piston_1)
         self.components.append(self.shooter)
         # Create climber
         climber_left = ctre.WPI_TalonSRX(config.Ports.Climber.CLIMBER_LEFT)
