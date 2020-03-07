@@ -65,10 +65,10 @@ class Shooter:
         self.shooter_speed_right = speed
 
     def get_shooter_left_velocity(self):
-        return self.shooter_left.getSelectedSensorVelocity()
+        return self.shooter_left.getSelectedSensorVelocity() / -4096
 
     def get_shooter_right_velocity(self):
-        return self.shooter_right.getSelectedSensorVelocity()
+        return self.shooter_right.getSelectedSensorVelocity() / 4096
 
     def set_shooter(self, status):
         self.shooter_status = status

@@ -127,9 +127,11 @@ class Shooter:
 
 
 class ShooterController:
-    P_LEFT = 0.03
+    P_LEFT = 0.02
     I_LEFT = 0.0
-    D_LEFT = 0.005
-    P_RIGHT = 0.03
+    D_LEFT = 0.004
+    F_LEFT = 0.2
+    P_RIGHT = 0.02
     I_RIGHT = 0.0
-    D_RIGHT = 0.005
+    D_RIGHT = 0.004
+    F_RIGHT = 0.2

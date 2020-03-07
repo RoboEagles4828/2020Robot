@@ -34,6 +34,8 @@ class Robot(wpilib.TimedRobot):
         self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
         # Get pi network table
         self.nt_pi = NetworkTables.getTable("pi")
+        # Get plot network table
+        self.nt_plot = NetworkTables.getTable("plot")
         # Create buttons status
         self.button_camera = False
         self.button_intake = False
@@ -297,6 +299,14 @@ class Robot(wpilib.TimedRobot):
                     config.Robot.Climber.WINCH_RIGHT_BACK_UP_SPEED
                     if self.joystick_1.getThrottle() < 0 else
                     -config.Robot.Climber.WINCH_RIGHT_BACK_DOWN_SPEED)
+        except Exception as exception:
+            self.logger.exception(exception)
+        # Plot
+        try:
+            self.nt_plot.putNumber("Shooter left velocity",
+                                   self.shooter.get_shooter_left_velocity())
+            self.nt_plot.putNumber("shooter right velocity",
+                                   self.shooter.get_shooter_right_velocity())
         except Exception as exception:
             self.logger.exception(exception)
 

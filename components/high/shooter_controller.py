@@ -34,9 +34,13 @@ class ShooterController:
     def execute(self):
         if self.enabled:
             if self.velocity != 0:
-                self.speed_left = self.shooter_left_controller.calculate(
+                if self.speed_left == 0:
+                    self.speed_left = self.velocity * config.ShooterController.F_LEFT
+                if self.speed_right == 0:
+                    self.speed_right = self.velocity * config.ShooterController.F_RIGHT
+                self.speed_left += self.shooter_left_controller.calculate(
                     self.shooter.get_shooter_left_velocity(), self.velocity)
-                self.speed_right = self.shooter_right_controller.calculate(
+                self.speed_right += self.shooter_right_controller.calculate(
                     self.shooter.get_shooter_right_velocity(), self.velocity)
             else:
                 self.speed_left = 0
