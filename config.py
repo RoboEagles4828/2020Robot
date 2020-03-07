@@ -49,7 +49,8 @@ class Ports:
     class Shooter:
         INTAKE = 5
         CONVEYOR = 7
-        CONVEYOR_PROX_FRONT = 8
+        CONVEYOR_PROX_FRONT_0 = 7
+        CONVEYOR_PROX_FRONT_1 = 8
         CONVEYOR_PROX_BACK = 9
         SHOOTER_LEFT = 11
         SHOOTER_RIGHT = 12
