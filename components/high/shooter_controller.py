@@ -1,11 +1,45 @@
+import wpilib.controller
 from components.low.shooter import Shooter
 
 
 class ShooterController:
     def __init__(self, shooter: Shooter):
+        self.shooter = shooter
         self.shooter_left_controller = wpilib.controller.PIDController(
-            config.Shooter.P_LEFT, config.Shooter.I_LEFT,
-            config.Shooter.D_LEFT)
+            config.ShooterController.P_LEFT, config.ShooterController.I_LEFT,
+            config.ShooterController.D_LEFT)
         self.shooter_right_controller = wpilib.controller.PIDController(
-            config.Shooter.P_RIGHT, config.Shooter.I_RIGHT,
-            config.Shooter.D_RIGHT)
+            config.ShooterController.P_RIGHT, config.ShooterController.I_RIGHT,
+            config.ShooterController.D_RIGHT)
+        self.speed_left = 0
+        self.speed_right = 0
+        self.velocity = 0
+        self.enabled = False
+
+    def set_velocity(self, velocity):
+        self.velocity = velocity
+
+    def get_speed_left(self):
+        return self.speed_left
+
+    def get_speed_right(self):
+        return self.speed_right
+
+    def enable(self):
+        self.enabled = True
+
+    def disable(self):
+        self.enabled = False
+
+    def execute(self):
+        if self.enabled:
+            if self.velocity != 0:
+                self.speed_left = self.shooter_left_controller.calculate(
+                    self.shooter.get_shooter_left_velocity(), self.velocity)
+                self.speed_right = self.shooter_right_controller.calculate(
+                    self.shooter.get_shooter_right_velocity(), self.velocity)
+            else:
+                self.speed_left = 0
+                self.speed_right = 0
+            self.shooter.set_shooter_speed_left(self.speed_left)
+            self.shooter.set_shooter_speed_right(self.speed_right)

@@ -35,6 +35,10 @@ class Robot:
         WINCH_RIGHT_FRONT_DOWN_SPEED = 1.0
         WINCH_RIGHT_BACK_DOWN_SPEED = 1.0
 
+    class ShooterController:
+        SHOOTER_VELOCITY_0 = 1
+        SHOOTER_VELOCITY_1 = 2
+
 
 class Ports:
 
@@ -119,9 +123,12 @@ class Drivetrain:
 class Shooter:
     CONVEYOR_INTAKE_SPEED = 0.85
     CONVEYOR_SHOOT_SPEED = 0.85
-    P_LEFT = 0.5
+
+
+class ShooterController:
+    P_LEFT = 0.03
     I_LEFT = 0.0
-    D_LEFT = 0.0
-    P_RIGHT = 0.5
+    D_LEFT = 0.005
+    P_RIGHT = 0.03
     I_RIGHT = 0.0
-    D_RIGHT = 0.0
+    D_RIGHT = 0.005

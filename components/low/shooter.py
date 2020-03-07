@@ -26,15 +26,10 @@ class Shooter:
         self.conveyor_status = False
         self.conveyor_prox_front_status = False
         self.conveyor_prox_back_status = False
-        self.shooter_speed = 0
+        self.shooter_speed_left = 0
+        self.shooter_speed_right = 0
         self.shooter_status = False
         self.timer = wpilib.Timer()
-        self.shooter_left_controller = wpilib.controller.PIDController(
-            config.Shooter.P_LEFT, config.Shooter.I_LEFT,
-            config.Shooter.D_LEFT)
-        self.shooter_right_controller = wpilib.controller.PIDController(
-            config.Shooter.P_RIGHT, config.Shooter.I_RIGHT,
-            config.Shooter.D_RIGHT)
 
     def set_intake_speed(self, speed):
         self.intake_speed = speed
@@ -53,8 +48,21 @@ class Shooter:
     def get_conveyor_prox_back(self):
         return self.conveyor_prox_back_status
 
+    def set_shooter_speed_left(self, speed):
+        self.shooter_speed_left = speed
+
+    def set_shooter_speed_right(self, speed):
+        self.shooter_speed_right = speed
+
     def set_shooter_speed(self, speed):
-        self.shooter_speed = speed
+        self.shooter_speed_left = speed
+        self.shooter_speed_right = speed
+
+    def get_shooter_left_velocity(self):
+        return self.shooter_left.getSelectedSensorVelocity()
+
+    def get_shooter_right_velocity(self):
+        return self.shooter_right.getSelectedSensorVelocity()
 
     def set_shooter(self, status):
         self.shooter_status = status
@@ -66,7 +74,7 @@ class Shooter:
         self.intake.set(self.intake_speed)
         self.conveyor_prox_front_status = self.conveyor_prox_front.get()
         self.conveyor_prox_back_status = not self.conveyor_prox_back.get()
-        if self.shooter_speed != 0:
+        if self.shooter_speed_left != 0 or self.shooter_speed_right != 0:
             if self.timer.hasElapsed(1.0):
                 self.conveyor.set(config.Shooter.CONVEYOR_SHOOT_SPEED)
             self.timer.start()
@@ -79,7 +87,7 @@ class Shooter:
             self.timer.stop()
             self.timer.reset()
             self.conveyor.set(0)
-        self.shooter_left.set(self.shooter_speed)
-        self.shooter_right.set(-self.shooter_speed)
+        self.shooter_left.set(self.shooter_speed_left)
+        self.shooter_right.set(-self.shooter_speed_right)
         self.shooter_piston_0.set(self.shooter_status)
         self.shooter_piston_1.set(self.shooter_status)
