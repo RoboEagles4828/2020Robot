@@ -49,6 +49,7 @@ class AutoDrivetrain:
 
     def set_path(self, name):
         self.path = PathsManager.paths[name]
+        self.pos = 0
 
     def enable(self):
         self.enabled = True

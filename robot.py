@@ -13,6 +13,7 @@ from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
 from components.low.climber import Climber
+from components.high.auto_drivetrain import AutoDrivetrain
 
 
 class Robot(wpilib.TimedRobot):
@@ -119,6 +120,8 @@ class Robot(wpilib.TimedRobot):
                                winch_left_back, winch_right_front,
                                winch_right_back)
         self.components.append(self.climber)
+        # Create auto drivetrain
+        self.auto_drivetrain = AutoDrivetrain(self.drivetrain, self.navx)
         # Create autonomous helper
         self.autonomous = Autonomous(self.drivetrain, self.navx, self.shooter)
         # Create autonomous selector
@@ -128,7 +131,8 @@ class Robot(wpilib.TimedRobot):
                 "drivetrain": self.drivetrain,
                 "navx": self.navx,
                 "shooter": self.shooter,
-                "nt_pi": self.nt_pi
+                "nt_pi": self.nt_pi,
+                "auto_drivetrain": self.auto_drivetrain
             })
 
     def autonomousInit(self):
