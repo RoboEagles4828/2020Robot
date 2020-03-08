@@ -111,7 +111,7 @@ class Autonomous:
     POS_3_TRENCH = 130.4
     DRIVE_DISTANCE = 50.0
     DS_8_TO_MID = 60.0
-    DS_8_TURN = 22.5
+    DS_8_TURN = 67.5
     DS_8_FORWARD_MID = 86.3
     DS_8_BACK_MID = 68.3
     DS_SHOOT = 178.0
