@@ -1,4 +1,6 @@
 import wpilib.controller
+
+import config
 from components.low.shooter import Shooter
 
 

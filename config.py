@@ -36,8 +36,8 @@ class Robot:
         WINCH_RIGHT_BACK_DOWN_SPEED = 1.0
 
     class ShooterController:
-        SHOOTER_VELOCITY_0 = 1
-        SHOOTER_VELOCITY_1 = 2
+        SHOOTER_VELOCITY_0 = 2
+        SHOOTER_VELOCITY_1 = 3
 
 
 class Ports:
