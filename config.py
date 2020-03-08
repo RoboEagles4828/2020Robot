@@ -60,7 +60,7 @@ class Drivetrain:
 
 
 class Shooter:
-    CONVEYOR_INTAKE_SPEED = 0.85
+    CONVEYOR_INTAKE_SPEED = 0.40
     CONVEYOR_SHOOT_SPEED = 0.85
 
 
