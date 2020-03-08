@@ -8,8 +8,8 @@ class Robot:
     CAMERA_YAW_POS_1 = 0.90
 
     class Drivetrain:
-        DRIVE_SPEED = 0.4
-        DRIVE_SLOW_SPEED = 0.1
+        DRIVE_SPEED = 0.35
+        DRIVE_SLOW_SPEED = 0.2
         DRIVE_TURN_SPEED = 0.3
         VISION_RATIO = 0.5
 
@@ -36,8 +36,8 @@ class Robot:
         WINCH_RIGHT_BACK_DOWN_SPEED = 1.0
 
     class ShooterController:
-        SHOOTER_VELOCITY_0 = 2
-        SHOOTER_VELOCITY_1 = 3
+        SHOOTER_VELOCITY_0 = 1.93
+        SHOOTER_VELOCITY_1 = 2.40
 
 
 class Ports:
@@ -123,15 +123,15 @@ class Drivetrain:
 
 class Shooter:
     CONVEYOR_INTAKE_SPEED = 0.40
-    CONVEYOR_SHOOT_SPEED = 0.85
+    CONVEYOR_SHOOT_SPEED = 0.75
 
 
 class ShooterController:
-    P_LEFT = 0.02
-    I_LEFT = 0.0
-    D_LEFT = 0.004
-    F_LEFT = 0.2
-    P_RIGHT = 0.02
-    I_RIGHT = 0.0
-    D_RIGHT = 0.004
-    F_RIGHT = 0.2
+    P_LEFT = 0.00
+    I_LEFT = 0
+    D_LEFT = 0.000
+    F_LEFT = 0.25
+    P_RIGHT = 0.00
+    I_RIGHT = 0
+    D_RIGHT = 0.000
+    F_RIGHT = 0.25

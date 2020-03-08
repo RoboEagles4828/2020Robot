@@ -126,7 +126,8 @@ class Robot(wpilib.TimedRobot):
         self.shooter_controller = ShooterController(self.shooter)
         self.components.append(self.shooter_controller)
         # Create autonomous helper
-        self.autonomous = Autonomous(self.drivetrain, self.navx, self.shooter)
+        self.autonomous = Autonomous(self.drivetrain, self.navx,
+                                     self.shooter_controller)
         # Create autonomous selector
         self.auton_mode = AutonomousModeSelector(
             "autonomous", {
@@ -134,11 +135,13 @@ class Robot(wpilib.TimedRobot):
                 "drivetrain": self.drivetrain,
                 "navx": self.navx,
                 "shooter": self.shooter,
+                "shooter_controller": self.shooter_controller,
                 "nt_pi": self.nt_pi
             })
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
+        self.shooter_controller.enable()
 
     def autonomousPeriodic(self):
         try:
@@ -307,6 +310,10 @@ class Robot(wpilib.TimedRobot):
                                    self.shooter.get_shooter_left_velocity())
             self.nt_plot.putNumber("shooter right velocity",
                                    self.shooter.get_shooter_right_velocity())
+            self.nt_plot.putNumber("Shooter left speed",
+                                   self.shooter_controller.get_speed_left())
+            self.nt_plot.putNumber("Shooter right speed",
+                                   self.shooter_controller.get_speed_right())
         except Exception as exception:
             self.logger.exception(exception)
 
