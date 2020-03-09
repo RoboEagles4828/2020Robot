@@ -2,11 +2,13 @@ from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
 from navx import AHRS
+from networktables import NetworkTable
 
 import config
 from autonomous.autonomous import Autonomous
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
+from components.high.shooter_controller import ShooterController
 
 
 class DoubleShoot8(StatefulAutonomous):
@@ -15,6 +17,8 @@ class DoubleShoot8(StatefulAutonomous):
     drivetrain: Drivetrain
     navx: AHRS
     shooter: Shooter
+    shooter_controller: ShooterController
+    nt_pi: NetworkTable
 
     MODE_NAME = "Double Shoot 8"
 
@@ -106,5 +110,5 @@ class DoubleShoot8(StatefulAutonomous):
 
     @state
     def end(self):
-        self.shooter.set_shooter_speed(0)
+        self.shooter_controller.set_velocity(0)
         self.done()
