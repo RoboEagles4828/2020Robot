@@ -190,8 +190,11 @@ class Robot(wpilib.TimedRobot):
                     config.Buttons.Joystick0.Drivetrain.VISION):
                 value = self.nt_pi.getNumber(
                     "value", 0) * config.Robot.Drivetrain.VISION_RATIO
-                if abs(value) < 0.05:
-                    value = value / abs(value) * 0.05
+                if abs(value) < config.Robot.Drivetrain.VISION_MIN_SPEED:
+                    value = value / abs(
+                        value) * config.Robot.Drivetrain.VISION_MIN_SPEED
+                if abs(value) < config.Robot.Drivetrain.VISION_CUTOFF:
+                    value = 0
                 self.drivetrain.set_speeds(value, -value)
             else:
                 self.drivetrain.set_speeds_joystick(
@@ -226,7 +229,7 @@ class Robot(wpilib.TimedRobot):
             elif self.joystick_1.getRawButton(
                     config.Buttons.Joystick1.Shooter.SHOOT_1):
                 self.shooter_controller.set_velocity(
-                    config.Robot.ShooterController.SHOOTER_VELOCITY_1)
+                    config.Robot.ShooterController.SHOOTER_VELOCITY_2)
             else:
                 self.shooter_controller.set_velocity(0)
             # Shooter status (Joystick 0)
