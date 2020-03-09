@@ -43,7 +43,9 @@ class DoubleShoot6Right(StatefulAutonomous):
     @state
     def drive2(self, initial_call):
         self.shooter.set_intake_speed(config.Robot.Shooter.INTAKE_SPEED)
-        if self.autonomous.drive(initial_call, config.Autonomous.POS_2_TRENCH):
+        if self.autonomous.drive(initial_call,
+                                 config.Autonomous.POS_2_TRENCH,
+                                 slow=True):
             self.next_state("drive3")
 
     @state

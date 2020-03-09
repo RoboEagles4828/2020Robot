@@ -2,17 +2,18 @@ from navx import AHRS
 
 import config
 from components.low.drivetrain import Drivetrain
-from components.low.shooter import Shooter
+from components.high.shooter_controller import ShooterController
 
 
 class Autonomous:
-    def __init__(self, drivetrain: Drivetrain, navx: AHRS, shooter: Shooter):
+    def __init__(self, drivetrain: Drivetrain, navx: AHRS,
+                 shooter_controller: ShooterController):
         self.drivetrain = drivetrain
         self.navx = navx
-        self.shooter = shooter
+        self.shooter_controller = shooter_controller
 
     def drive(self, reset: bool, distance: float, slow=False):
-        self.shooter.set_shooter_speed(0)
+        self.shooter_controller.set_velocity(0)
         if reset:
             self.drivetrain.reset_distance()
         if distance > 0:
@@ -34,22 +35,24 @@ class Autonomous:
         return self.drivetrain.get_distance() < distance
 
     def turn(self, reset: bool, angle: float):
-        self.shooter.set_shooter_speed(0)
+        self.shooter_controller.set_velocity(0)
         if reset:
             self.navx.reset()
         if angle > 0:
             self.drivetrain.set_speeds(
                 config.Robot.Drivetrain.DRIVE_TURN_SPEED,
                 -config.Robot.Drivetrain.DRIVE_TURN_SPEED)
-            return self.navx.getAngle() % 360 > angle
+            return self.navx.getAngle() > angle
         self.drivetrain.set_speeds(-config.Robot.Drivetrain.DRIVE_TURN_SPEED,
                                    config.Robot.Drivetrain.DRIVE_TURN_SPEED)
-        return self.navx.getAngle() % 360 < angle
+        return self.navx.getAngle() < angle
 
     def shoot_0(self):
         self.drivetrain.set_speeds(0, 0)
-        self.shooter.set_shooter_speed(config.Robot.Shooter.SHOOTER_SPEED_0)
+        self.shooter_controller.set_velocity(
+            config.Robot.ShooterController.SHOOTER_VELOCITY_0)
 
     def shoot_1(self):
         self.drivetrain.set_speeds(0, 0)
-        self.shooter.set_shooter_speed(config.Robot.Shooter.SHOOTER_SPEED_1)
+        self.shooter_controller.set_velocity(
+            config.Robot.ShooterController.SHOOTER_VELOCITY_1)

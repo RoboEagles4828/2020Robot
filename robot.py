@@ -13,6 +13,7 @@ from components.low.digital_input import DigitalInput
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
 from components.low.climber import Climber
+from components.high.shooter_controller import ShooterController
 
 
 class Robot(wpilib.TimedRobot):
@@ -33,6 +34,8 @@ class Robot(wpilib.TimedRobot):
         self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
         # Get pi network table
         self.nt_pi = NetworkTables.getTable("pi")
+        # Get plot network table
+        self.nt_plot = NetworkTables.getTable("plot")
         # Create buttons status
         self.button_camera = False
         self.button_intake = False
@@ -119,8 +122,12 @@ class Robot(wpilib.TimedRobot):
                                winch_left_back, winch_right_front,
                                winch_right_back)
         self.components.append(self.climber)
+        # Create shooter controller
+        self.shooter_controller = ShooterController(self.shooter)
+        self.components.append(self.shooter_controller)
         # Create autonomous helper
-        self.autonomous = Autonomous(self.drivetrain, self.navx, self.shooter)
+        self.autonomous = Autonomous(self.drivetrain, self.navx,
+                                     self.shooter_controller)
         # Create autonomous selector
         self.auton_mode = AutonomousModeSelector(
             "autonomous", {
@@ -128,11 +135,13 @@ class Robot(wpilib.TimedRobot):
                 "drivetrain": self.drivetrain,
                 "navx": self.navx,
                 "shooter": self.shooter,
+                "shooter_controller": self.shooter_controller,
                 "nt_pi": self.nt_pi
             })
 
     def autonomousInit(self):
         """Autonomous mode initialization"""
+        self.shooter_controller.enable()
 
     def autonomousPeriodic(self):
         try:
@@ -153,6 +162,7 @@ class Robot(wpilib.TimedRobot):
         """Teleoperated mode initialization"""
         self.timer.reset()
         self.timer.start()
+        self.shooter_controller.enable()
 
     def teleopPeriodic(self):
         """Teleoperated mode periodic (20ms)"""
@@ -211,14 +221,14 @@ class Robot(wpilib.TimedRobot):
             # Shooter (Joystick 1)
             if self.joystick_1.getRawButton(
                     config.Buttons.Joystick1.Shooter.SHOOT_0):
-                self.shooter.set_shooter_speed(
-                    config.Robot.Shooter.SHOOTER_SPEED_0)
+                self.shooter_controller.set_velocity(
+                    config.Robot.ShooterController.SHOOTER_VELOCITY_0)
             elif self.joystick_1.getRawButton(
                     config.Buttons.Joystick1.Shooter.SHOOT_1):
-                self.shooter.set_shooter_speed(
-                    config.Robot.Shooter.SHOOTER_SPEED_1)
+                self.shooter_controller.set_velocity(
+                    config.Robot.ShooterController.SHOOTER_VELOCITY_1)
             else:
-                self.shooter.set_shooter_speed(0)
+                self.shooter_controller.set_velocity(0)
             # Shooter status (Joystick 0)
             if self.joystick_0.getPOV() == 180:
                 self.shooter.set_shooter(True)
@@ -292,6 +302,18 @@ class Robot(wpilib.TimedRobot):
                     config.Robot.Climber.WINCH_RIGHT_BACK_UP_SPEED
                     if self.joystick_1.getThrottle() < 0 else
                     -config.Robot.Climber.WINCH_RIGHT_BACK_DOWN_SPEED)
+        except Exception as exception:
+            self.logger.exception(exception)
+        # Plot
+        try:
+            self.nt_plot.putNumber("Shooter left velocity",
+                                   self.shooter.get_shooter_left_velocity())
+            self.nt_plot.putNumber("shooter right velocity",
+                                   self.shooter.get_shooter_right_velocity())
+            self.nt_plot.putNumber("Shooter left speed",
+                                   self.shooter_controller.get_speed_left())
+            self.nt_plot.putNumber("Shooter right speed",
+                                   self.shooter_controller.get_speed_right())
         except Exception as exception:
             self.logger.exception(exception)
 
