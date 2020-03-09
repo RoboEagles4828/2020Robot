@@ -30,7 +30,7 @@ class Shoot5Mid(StatefulAutonomous):
             self.next_state("drive1")
     @state
     def drive1(self, initial_call):
-        if self.autonomous.dirve(initial_call, 130):
+        if self.autonomous.drive(initial_call, 130):
             self.next_state("turn2")
 
     @state
@@ -60,7 +60,7 @@ class Shoot5Mid(StatefulAutonomous):
         if self.autonomous.drive(initial_call, -130):
             self.next_state("vision1")
 
-    @timed_state(duration=1.0, next_state="shoot2", first=True)
+    @timed_state(duration=1.0, next_state="shoot2")
     def vision1(self):
         value = self.nt_pi.getNumber("value",
                                      0) * config.Robot.Drivetrain.VISION_RATIO
