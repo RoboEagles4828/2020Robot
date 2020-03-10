@@ -7,6 +7,7 @@ import config
 from autonomous.autonomous import Autonomous
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
+from components.high.shooter_controller import ShooterController
 
 
 class DoubleShoot8Right(StatefulAutonomous):
@@ -15,6 +16,7 @@ class DoubleShoot8Right(StatefulAutonomous):
     drivetrain: Drivetrain
     navx: AHRS
     shooter: Shooter
+    shooter_controller: ShooterController
 
     MODE_NAME = "Double Shoot 8 Right"
 
@@ -28,7 +30,11 @@ class DoubleShoot8Right(StatefulAutonomous):
     def turn1(self, initial_call):
         if self.autonomous.turn(initial_call,
                                 -config.Autonomous.POS_2_TRENCH_TURN):
-            self.next_state("shoot1")
+            self.next_state("vision1")
+
+    @timed_state(duration=1.5, next_state="shoot1")
+    def vision1(self):
+        self.autonomous.vision()
 
     @timed_state(duration=3.0, next_state="turn2")
     def shoot1(self):
@@ -43,7 +49,9 @@ class DoubleShoot8Right(StatefulAutonomous):
     @state
     def drive2(self, initial_call):
         self.shooter.set_intake_speed(config.Robot.Shooter.INTAKE_SPEED)
-        if self.autonomous.drive(initial_call, config.Autonomous.POS_2_TRENCH):
+        if self.autonomous.drive(initial_call,
+                                 config.Autonomous.POS_2_TRENCH,
+                                 slow=True):
             self.next_state("turn3")
 
     @state
@@ -94,13 +102,17 @@ class DoubleShoot8Right(StatefulAutonomous):
     @state
     def turn6(self, initial_call):
         if self.autonomous.turn(initial_call, 180):
-            self.next_state("shoot2")
+            self.next_state("vision2")
 
-    @timed_state(duration=5.0, next_state="end")
+    @timed_state(duration=1.5, next_state="shoot2")
+    def vision2(self):
+        self.autonomous.vision()
+
+    @timed_state(duration=3.0, next_state="end")
     def shoot2(self):
         self.autonomous.shoot_0()
 
     @state
     def end(self):
-        self.shooter.set_shooter_speed(0)
+        self.shooter_controller.set_velocity(0)
         self.done()

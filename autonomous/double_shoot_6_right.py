@@ -2,7 +2,6 @@ from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
 from navx import AHRS
-from networktables import NetworkTable
 
 import config
 from autonomous.autonomous import Autonomous
@@ -18,7 +17,6 @@ class DoubleShoot6Right(StatefulAutonomous):
     navx: AHRS
     shooter: Shooter
     shooter_controller: ShooterController
-    nt_pi: NetworkTable
 
     MODE_NAME = "Double Shoot 6 Right"
 
@@ -34,14 +32,9 @@ class DoubleShoot6Right(StatefulAutonomous):
                                 -config.Autonomous.POS_2_TRENCH_TURN):
             self.next_state("vision1")
 
-    @timed_state(duration=2.0, next_state="shoot1")
+    @timed_state(duration=1.5, next_state="shoot1")
     def vision1(self):
-        value = self.nt_pi.getNumber("value",
-                                     0) * config.Robot.Drivetrain.VISION_RATIO
-        if abs(value) < config.Robot.Drivetrain.VISION_MIN_SPEED:
-            value = value / abs(
-                value) * config.Robot.Drivetrain.VISION_MIN_SPEED
-        self.drivetrain.set_speeds(value, -value)
+        self.autonomous.vision()
 
     @timed_state(duration=3.0, next_state="turn2")
     def shoot1(self):
@@ -75,14 +68,9 @@ class DoubleShoot6Right(StatefulAutonomous):
                                 -config.Autonomous.POS_2_TRENCH_TURN):
             self.next_state("vision2")
 
-    @timed_state(duration=2.0, next_state="shoot2")
+    @timed_state(duration=1.5, next_state="shoot2")
     def vision2(self):
-        value = self.nt_pi.getNumber("value",
-                                     0) * config.Robot.Drivetrain.VISION_RATIO
-        if abs(value) < config.Robot.Drivetrain.VISION_MIN_SPEED:
-            value = value / abs(
-                value) * config.Robot.Drivetrain.VISION_MIN_SPEED
-        self.drivetrain.set_speeds(value, -value)
+        self.autonomous.vision()
 
     @timed_state(duration=3.0, next_state="end")
     def shoot2(self):

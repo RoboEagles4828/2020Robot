@@ -1,4 +1,5 @@
 from navx import AHRS
+from networktables import NetworkTable
 
 import config
 from components.low.drivetrain import Drivetrain
@@ -7,10 +8,11 @@ from components.high.shooter_controller import ShooterController
 
 class Autonomous:
     def __init__(self, drivetrain: Drivetrain, navx: AHRS,
-                 shooter_controller: ShooterController):
+                 shooter_controller: ShooterController, nt_pi: NetworkTable):
         self.drivetrain = drivetrain
         self.navx = navx
         self.shooter_controller = shooter_controller
+        self.nt_pi = nt_pi
 
     def drive(self, reset: bool, distance: float, slow=False):
         self.shooter_controller.set_velocity(0)
@@ -56,3 +58,11 @@ class Autonomous:
         self.drivetrain.set_speeds(0, 0)
         self.shooter_controller.set_velocity(
             config.Robot.ShooterController.SHOOTER_VELOCITY_1)
+
+    def vision(self):
+        value = self.nt_pi.getNumber("value", 0) * config.Robot.VISION_RATIO
+        if abs(value) < config.Robot.VISION_MIN_SPEED:
+            value = value / abs(value) * config.Robot.VISION_MIN_SPEED
+        if abs(value) < config.Robot.VISION_DEADZONE:
+            value = 0
+        self.drivetrain.set_speeds(value, -value)

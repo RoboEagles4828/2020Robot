@@ -2,7 +2,6 @@ from robotpy_ext.autonomous import StatefulAutonomous
 from robotpy_ext.autonomous.stateful_autonomous import state
 from robotpy_ext.autonomous.stateful_autonomous import timed_state
 from navx import AHRS
-from networktables import NetworkTable
 
 import config
 from autonomous.autonomous import Autonomous
@@ -18,7 +17,6 @@ class DoubleShoot6(StatefulAutonomous):
     navx: AHRS
     shooter: Shooter
     shooter_controller: ShooterController
-    nt_pi: NetworkTable
 
     MODE_NAME = "Double Shoot 6"
 
@@ -51,7 +49,9 @@ class DoubleShoot6(StatefulAutonomous):
     @state
     def drive3(self, initial_call):
         self.shooter.set_intake_speed(config.Robot.Shooter.INTAKE_SPEED)
-        if self.autonomous.drive(initial_call, config.Autonomous.POS_1_TRENCH):
+        if self.autonomous.drive(initial_call,
+                                 config.Autonomous.POS_1_TRENCH,
+                                 slow=True):
             self.next_state("drive4")
 
     @state
@@ -68,16 +68,11 @@ class DoubleShoot6(StatefulAutonomous):
                                 -config.Autonomous.POS_2_TRENCH_TURN):
             self.next_state("vision1")
 
-    @timed_state(duration=2.0, next_state="shoot2")
+    @timed_state(duration=1.5, next_state="shoot2")
     def vision1(self):
-        value = self.nt_pi.getNumber("value",
-                                     0) * config.Robot.Drivetrain.VISION_RATIO
-        if abs(value) < config.Robot.Drivetrain.VISION_MIN_SPEED:
-            value = value / abs(
-                value) * config.Robot.Drivetrain.VISION_MIN_SPEED
-        self.drivetrain.set_speeds(value, -value)
+        self.autonomous.vision()
 
-    @timed_state(duration=5.0, next_state="end")
+    @timed_state(duration=3.0, next_state="end")
     def shoot2(self):
         self.autonomous.shoot_1()
 

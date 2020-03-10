@@ -7,6 +7,7 @@ import config
 from autonomous.autonomous import Autonomous
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
+from components.high.shooter_controller import ShooterController
 
 
 class ShootForward(StatefulAutonomous):
@@ -15,6 +16,7 @@ class ShootForward(StatefulAutonomous):
     drivetrain: Drivetrain
     navx: AHRS
     shooter: Shooter
+    shooter_controller: ShooterController
 
     MODE_NAME = "Shoot Forward"
 

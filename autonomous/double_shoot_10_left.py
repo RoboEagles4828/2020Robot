@@ -7,6 +7,7 @@ import config
 from autonomous.autonomous import Autonomous
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
+from components.high.shooter_controller import ShooterController
 
 
 class DoubleShoot10Left(StatefulAutonomous):
@@ -15,6 +16,7 @@ class DoubleShoot10Left(StatefulAutonomous):
     drivetrain: Drivetrain
     navx: AHRS
     shooter: Shooter
+    shooter_controller: ShooterController
 
     MODE_NAME = "Double Shoot 10 Left"
 
@@ -135,11 +137,11 @@ class DoubleShoot10Left(StatefulAutonomous):
         if self.autonomous.turn(initial_call, 180):
             self.next_state("shoot2")
 
-    @timed_state(duration=5.0, next_state="end")
+    @timed_state(duration=3.0, next_state="end")
     def shoot2(self):
         self.autonomous.shoot_0()
 
     @state
     def end(self):
-        self.shooter.set_shooter_speed(0)
+        self.shooter_controller.set_velocity(0)
         self.done()

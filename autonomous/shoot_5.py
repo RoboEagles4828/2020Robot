@@ -7,6 +7,7 @@ import config
 from autonomous.autonomous import Autonomous
 from components.low.drivetrain import Drivetrain
 from components.low.shooter import Shooter
+from components.high.shooter_controller import ShooterController
 
 
 class Shoot5(StatefulAutonomous):
@@ -15,6 +16,7 @@ class Shoot5(StatefulAutonomous):
     drivetrain: Drivetrain
     navx: AHRS
     shooter: Shooter
+    shooter_controller: ShooterController
 
     MODE_NAME = "Shoot 5"
 
@@ -45,9 +47,13 @@ class Shoot5(StatefulAutonomous):
     @state
     def turn2(self, initial_call):
         if self.autonomous.turn(initial_call, -config.Autonomous.POS_3_TURN):
-            self.next_state("shoot1")
+            self.next_state("vision1")
 
-    @timed_state(duration=5.0, next_state="turn3")
+    @timed_state(duration=1.5, next_state="shoot1")
+    def vision1(self):
+        self.autonomous.vision()
+
+    @timed_state(duration=3.0, next_state="turn3")
     def shoot1(self):
         self.autonomous.shoot_0()
 

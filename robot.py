@@ -129,7 +129,7 @@ class Robot(wpilib.TimedRobot):
         self.components.append(self.shooter_controller)
         # Create autonomous helper
         self.autonomous = Autonomous(self.drivetrain, self.navx,
-                                     self.shooter_controller)
+                                     self.shooter_controller, self.nt_pi)
         # Create autonomous selector
         self.autonomous_mode = AutonomousModeSelector(
             "autonomous", {
@@ -137,8 +137,7 @@ class Robot(wpilib.TimedRobot):
                 "drivetrain": self.drivetrain,
                 "navx": self.navx,
                 "shooter": self.shooter,
-                "shooter_controller": self.shooter_controller,
-                "nt_pi": self.nt_pi
+                "shooter_controller": self.shooter_controller
             })
 
     def autonomousInit(self):
@@ -190,12 +189,11 @@ class Robot(wpilib.TimedRobot):
         try:
             if self.joystick_0.getRawButton(
                     config.Buttons.Joystick0.Drivetrain.VISION):
-                value = self.nt_pi.getNumber(
-                    "value", 0) * config.Robot.Drivetrain.VISION_RATIO
-                if abs(value) < config.Robot.Drivetrain.VISION_MIN_SPEED:
-                    value = value / abs(
-                        value) * config.Robot.Drivetrain.VISION_MIN_SPEED
-                if abs(value) < config.Robot.Drivetrain.VISION_CUTOFF:
+                value = self.nt_pi.getNumber("value",
+                                             0) * config.Robot.VISION_RATIO
+                if abs(value) < config.Robot.VISION_MIN_SPEED:
+                    value = value / abs(value) * config.Robot.VISION_MIN_SPEED
+                if abs(value) < config.Robot.VISION_DEADZONE:
                     value = 0
                 self.drivetrain.set_speeds(value, -value)
             else:

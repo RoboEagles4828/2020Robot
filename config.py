@@ -6,14 +6,14 @@ class Robot:
     JOYSTICK_AVERAGE_PERIOD = 0
     CAMERA_YAW_POS_0 = 0.19
     CAMERA_YAW_POS_1 = 0.90
+    VISION_RATIO = 0.5
+    VISION_MIN_SPEED = 0.13
+    VISION_DEADZONE = 0.02
 
     class Drivetrain:
         DRIVE_SPEED = 0.35
         DRIVE_SLOW_SPEED = 0.2
         DRIVE_TURN_SPEED = 0.3
-        VISION_RATIO = 0.5
-        VISION_MIN_SPEED = 0.13
-        VISION_CUTOFF = 0.02
 
     class Shooter:
         INTAKE_SPEED = 0.5
