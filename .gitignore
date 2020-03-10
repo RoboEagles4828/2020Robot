@@ -131,3 +131,4 @@ dmypy.json
 .vscode/
 pi/
 !pi/main.py
+autonomous/config.py
