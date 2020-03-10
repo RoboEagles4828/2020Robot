@@ -131,10 +131,10 @@ class Shooter:
 
 class ShooterController:
     P_LEFT = 0.0
-    I_LEFT = 0
+    I_LEFT = 0.0
     D_LEFT = 0.0
     F_LEFT = 0.25
     P_RIGHT = 0.0
-    I_RIGHT = 0
+    I_RIGHT = 0.0
     D_RIGHT = 0.0
     F_RIGHT = 0.25
