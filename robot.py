@@ -131,7 +131,7 @@ class Robot(wpilib.TimedRobot):
         self.autonomous = Autonomous(self.drivetrain, self.navx,
                                      self.shooter_controller)
         # Create autonomous selector
-        self.auton_mode = AutonomousModeSelector(
+        self.autonomous_mode = AutonomousModeSelector(
             "autonomous", {
                 "autonomous": self.autonomous,
                 "drivetrain": self.drivetrain,
@@ -144,14 +144,9 @@ class Robot(wpilib.TimedRobot):
     def autonomousInit(self):
         """Autonomous mode initialization"""
         self.shooter_controller.enable()
+        self.autonomous_mode.start()
 
     def autonomousPeriodic(self):
-        try:
-            self.auton_mode.run(iter_fn=self.autonomous_iter)
-        except Exception as exception:
-            self.logger.exception(exception)
-
-    def autonomous_iter(self):
         """Autonomous mode periodic (20ms)"""
         # Run each component's execute function
         for component in self.components:
@@ -159,6 +154,11 @@ class Robot(wpilib.TimedRobot):
                 component.execute()
             except Exception as exception:
                 self.logger.exception(exception)
+        # Run autonomous mode
+        try:
+            self.autonomous_mode.periodic()
+        except Exception as exception:
+            self.logger.exception(exception)
 
     def teleopInit(self):
         """Teleoperated mode initialization"""
