@@ -44,10 +44,14 @@ class ShooterController:
                     self.shooter.get_shooter_left_velocity(), self.velocity)
                 self.speed_right += self.shooter_right_controller.calculate(
                     self.shooter.get_shooter_right_velocity(), self.velocity)
-                if abs(self.speed_left) > 1:
-                    self.speed_left = self.speed_left / abs(self.speed_left)
-                if abs(self.speed_right) > 1:
-                    self.speed_right = self.speed_right / abs(self.speed_right)
+                if self.speed_left > 1:
+                    self.speed_left = 1
+                elif self.speed_left < 0:
+                    self.speed_left = 0
+                if self.speed_right > 1:
+                    self.speed_right = 1
+                elif self.speed_right < 0:
+                    self.speed_right = 0
             else:
                 self.speed_left = 0
                 self.speed_right = 0
