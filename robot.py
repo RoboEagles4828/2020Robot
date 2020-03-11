@@ -23,7 +23,7 @@ class Robot(wpilib.TimedRobot):
         # Create logger
         self.logger = logging.getLogger("Robot")
         # Disable live window
-        wpilib.LiveWindow.disableAllTelemetry()
+        wpilib.LiveWindow.getInstance().disableAllTelemetry()
         # Create timer
         self.timer = wpilib.Timer()
         # Create compressor
