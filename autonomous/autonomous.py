@@ -18,35 +18,60 @@ class Autonomous:
         self.shooter_controller.set_velocity(0)
         if reset:
             self.drivetrain.reset_distance()
+        speed_ratio = min(
+            1,
+            abs(distance - self.drivetrain.get_distance()) *
+            config.Robot.Drivetrain.SPEED_RATIO)
         if distance > 0:
             if not slow:
-                self.drivetrain.set_speeds(config.Robot.Drivetrain.DRIVE_SPEED,
-                                           config.Robot.Drivetrain.DRIVE_SPEED)
+                self.drivetrain.set_speeds(
+                    max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                        config.Robot.Drivetrain.DRIVE_SPEED * speed_ratio),
+                    max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                        config.Robot.Drivetrain.DRIVE_SPEED * speed_ratio))
             else:
                 self.drivetrain.set_speeds(
-                    config.Robot.Drivetrain.DRIVE_SLOW_SPEED,
-                    config.Robot.Drivetrain.DRIVE_SLOW_SPEED)
+                    max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                        config.Robot.Drivetrain.DRIVE_SLOW_SPEED *
+                        speed_ratio),
+                    max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                        config.Robot.Drivetrain.DRIVE_SLOW_SPEED *
+                        speed_ratio))
             return self.drivetrain.get_distance() > distance
         if not slow:
-            self.drivetrain.set_speeds(-config.Robot.Drivetrain.DRIVE_SPEED,
-                                       -config.Robot.Drivetrain.DRIVE_SPEED)
+            self.drivetrain.set_speeds(
+                -max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                     config.Robot.Drivetrain.DRIVE_SPEED * speed_ratio),
+                -max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                     config.Robot.Drivetrain.DRIVE_SPEED * speed_ratio))
         else:
             self.drivetrain.set_speeds(
-                -config.Robot.Drivetrain.DRIVE_SLOW_SPEED,
-                -config.Robot.Drivetrain.DRIVE_SLOW_SPEED)
+                -max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                     config.Robot.Drivetrain.DRIVE_SLOW_SPEED * speed_ratio),
+                -max(config.Robot.Drivetrain.DRIVE_MIN_SPEED,
+                     config.Robot.Drivetrain.DRIVE_SLOW_SPEED * speed_ratio))
         return self.drivetrain.get_distance() < distance
 
     def turn(self, reset: bool, angle: float):
         self.shooter_controller.set_velocity(0)
         if reset:
             self.navx.reset()
+        speed_ratio = min(
+            1,
+            abs(angle - self.navx.getAngle()) *
+            config.Robot.Drivetrain.ANGLE_SPEED_RATIO)
         if angle > 0:
             self.drivetrain.set_speeds(
-                config.Robot.Drivetrain.DRIVE_TURN_SPEED,
-                -config.Robot.Drivetrain.DRIVE_TURN_SPEED)
+                max(config.Robot.Drivetrain.DRIVE_MIN_TURN_SPEED,
+                    config.Robot.Drivetrain.DRIVE_TURN_SPEED * speed_ratio),
+                -max(config.Robot.Drivetrain.DRIVE_MIN_TURN_SPEED,
+                     config.Robot.Drivetrain.DRIVE_TURN_SPEED * speed_ratio))
             return self.navx.getAngle() > angle
-        self.drivetrain.set_speeds(-config.Robot.Drivetrain.DRIVE_TURN_SPEED,
-                                   config.Robot.Drivetrain.DRIVE_TURN_SPEED)
+        self.drivetrain.set_speeds(
+            -max(config.Robot.Drivetrain.DRIVE_MIN_TURN_SPEED,
+                 config.Robot.Drivetrain.DRIVE_TURN_SPEED * speed_ratio),
+            max(config.Robot.Drivetrain.DRIVE_MIN_TURN_SPEED,
+                config.Robot.Drivetrain.DRIVE_TURN_SPEED * speed_ratio))
         return self.navx.getAngle() < angle
 
     def shoot_0(self):

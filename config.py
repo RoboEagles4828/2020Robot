@@ -11,9 +11,13 @@ class Robot:
     VISION_DEADZONE = 0.02
 
     class Drivetrain:
-        DRIVE_SPEED = 0.35
+        DRIVE_SPEED = 0.4
         DRIVE_SLOW_SPEED = 0.2
         DRIVE_TURN_SPEED = 0.3
+        DRIVE_MIN_SPEED = 0.1
+        DRIVE_MIN_TURN_SPEED = 0.13
+        SPEED_RATIO = 0.10
+        ANGLE_SPEED_RATIO = 0.08
 
     class Shooter:
         INTAKE_SPEED = 0.5
@@ -126,7 +130,7 @@ class Drivetrain:
 
 class Shooter:
     CONVEYOR_INTAKE_SPEED = 0.40
-    CONVEYOR_SHOOT_SPEED = 0.65
+    CONVEYOR_SHOOT_SPEED = 1.00
 
 
 class ShooterController:
