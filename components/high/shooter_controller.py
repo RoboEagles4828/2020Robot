@@ -21,12 +21,6 @@ class ShooterController:
     def set_velocity(self, velocity):
         self.velocity = velocity
 
-    def get_speed_left(self):
-        return self.speed_left
-
-    def get_speed_right(self):
-        return self.speed_right
-
     def enable(self):
         self.enabled = True
 
@@ -37,10 +31,10 @@ class ShooterController:
         if self.enabled:
             self.speed_left = config.ShooterController.F_LEFT * self.velocity + (
                 self.shooter_left_controller.calculate(
-                    self.shooter.get_shooter_left_velocity(), self.velocity))
+                    self.shooter.get_shooter_velocity_left(), self.velocity))
             self.speed_right = config.ShooterController.F_RIGHT * self.velocity + (
                 self.shooter_right_controller.calculate(
-                    self.shooter.get_shooter_right_velocity(), self.velocity))
+                    self.shooter.get_shooter_velocity_right(), self.velocity))
             self.speed_left = max(0, min(1, self.speed_left))
             self.speed_right = max(0, min(1, self.speed_right))
             self.shooter.set_shooter_speed_left(self.speed_left)

@@ -1,5 +1,6 @@
 """Main robot module"""
 import logging
+import pickle
 import wpilib
 import ctre
 from navx import AHRS
@@ -38,6 +39,10 @@ class Robot(wpilib.TimedRobot):
         self.nt_pi = NetworkTables.getTable("pi")
         # Get debug network table
         self.nt_debug = NetworkTables.getTable("debug")
+        # Create debug variables
+        self.debug_shooter_left = list()
+        self.debug_shooter_right = list()
+        self.debug_shooter_pickle = 0
         # Create buttons status
         self.button_camera = False
         self.button_intake = False
@@ -164,6 +169,8 @@ class Robot(wpilib.TimedRobot):
         self.timer.reset()
         self.timer.start()
         self.shooter_controller.enable()
+        self.debug_shooter_left = list()
+        self.debug_shooter_right = list()
 
     def teleopPeriodic(self):
         """Teleoperated mode periodic (20ms)"""
@@ -307,9 +314,29 @@ class Robot(wpilib.TimedRobot):
                     -config.Robot.Climber.WINCH_RIGHT_BACK_DOWN_SPEED)
         except Exception as exception:
             self.logger.exception(exception)
+        # Debug
+        try:
+            self.debug_shooter_left.append(
+                (self.shooter.get_shooter_speed_left(),
+                 self.shooter.get_shooter_velocity_left()))
+            self.debug_shooter_right.append(
+                (self.shooter.get_shooter_speed_right(),
+                 self.shooter.get_shooter_velocity_right()))
+        except Exception as exception:
+            self.logger.exception(exception)
 
     def disabledInit(self):
         """Disabled mode initialization"""
+        if len(self.debug_shooter_left) > 0:
+            with open(
+                    "/home/lvuser/shooter_left_%d.pickle" %
+                (self.debug_shooter_pickle), "wb") as file:
+                pickle.dump(self.debug_shooter_left, file)
+            with open(
+                    "/home/lvuser/shooter_right_%d.pickle" %
+                (self.debug_shooter_pickle), "wb") as file:
+                pickle.dump(self.debug_shooter_right, file)
+            self.debug_shooter_pickle += 1
 
     def disabledPeriodic(self):
         """Disabled mode periodic (20ms)"""
