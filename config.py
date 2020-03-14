@@ -50,6 +50,7 @@ class Robot:
 class Ports:
 
     CAMERA_SERVO_YAW = 1
+    LED = 0
 
     class Drivetrain:
         LEFT_0 = 1

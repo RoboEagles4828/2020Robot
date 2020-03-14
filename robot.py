@@ -34,6 +34,8 @@ class Robot(wpilib.TimedRobot):
         wpilib.CameraServer.launch()
         # Create camera servos
         self.camera_servo_yaw = wpilib.Servo(config.Ports.CAMERA_SERVO_YAW)
+        # Create led controller
+        self.led = wpilib.Spark(config.Ports.LED)
         # Get pi network table
         self.nt_pi = NetworkTables.getTable("pi")
         # Get debug network table
@@ -163,6 +165,7 @@ class Robot(wpilib.TimedRobot):
         """Teleoperated mode initialization"""
         self.timer.reset()
         self.timer.start()
+        self.led.set(-0.89)
         self.shooter_controller.enable()
 
     def teleopPeriodic(self):
