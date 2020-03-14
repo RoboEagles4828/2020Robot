@@ -29,13 +29,19 @@ class ShooterController:
 
     def execute(self):
         if self.enabled:
-            self.speed_left = config.ShooterController.F_LEFT * self.velocity + (
-                self.shooter_left_controller.calculate(
-                    self.shooter.get_shooter_velocity_left(), self.velocity))
-            self.speed_right = config.ShooterController.F_RIGHT * self.velocity + (
-                self.shooter_right_controller.calculate(
-                    self.shooter.get_shooter_velocity_right(), self.velocity))
-            self.speed_left = max(0, min(1, self.speed_left))
-            self.speed_right = max(0, min(1, self.speed_right))
+            if self.velocity != 0:
+                self.speed_left = config.ShooterController.F_LEFT * self.velocity + (
+                    self.shooter_left_controller.calculate(
+                        self.shooter.get_shooter_velocity_left(),
+                        self.velocity))
+                self.speed_right = config.ShooterController.F_RIGHT * self.velocity + (
+                    self.shooter_right_controller.calculate(
+                        self.shooter.get_shooter_velocity_right(),
+                        self.velocity))
+                self.speed_left = max(0, min(1, self.speed_left))
+                self.speed_right = max(0, min(1, self.speed_right))
+            else:
+                self.speed_left = 0
+                self.speed_right = 0
             self.shooter.set_shooter_speed_left(self.speed_left)
             self.shooter.set_shooter_speed_right(self.speed_right)
